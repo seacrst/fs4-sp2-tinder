@@ -8,8 +8,8 @@ import java.util.Properties;
 
 public class DataBase {
     private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String USERNAME = "pguser";
-    private static final String PASSWORD = "pgpasswd";
+    private static final String USERNAME = "postgres";
+    private static final String PASSWORD = "pg123456";
     public static Optional<Connection> connect(String url, String username, String password) {
         try {
             Properties properties = new Properties();

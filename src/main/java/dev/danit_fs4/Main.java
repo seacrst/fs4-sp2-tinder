@@ -10,14 +10,13 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import java.sql.Connection;
-import java.util.Optional;
 
 
 public class Main {
 
 
     public static void main(String[] args) throws Exception {
-//        Connection connection = DataBase.connect().orElseThrow();
+        Connection connection = DataBase.connect().orElseThrow();
 
 
        Server server = new Server(8080);
