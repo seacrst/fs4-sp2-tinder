@@ -1,0 +1,13 @@
+version: '3.3'
+
+services:
+  postgres:
+    image: postgres:9.6
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: 'pguser'
+      POSTGRES_DB: 'postgres'
+      POSTGRES_PASSWORD: 'pgpasswd'
+    ports:
+      - '5432:5432'
+    container_name: pg_0
