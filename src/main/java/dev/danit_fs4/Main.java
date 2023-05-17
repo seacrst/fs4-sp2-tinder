@@ -18,7 +18,10 @@ public class Main {
 
 
     public static void main(String[] args) throws Exception {
-        DataBase.checkAndApplyDeltas();
+
+        // міграція
+        // DataBase.checkAndApplyDeltas();
+
         Connection connection = DataBase.connect().orElseThrow();
 
 
