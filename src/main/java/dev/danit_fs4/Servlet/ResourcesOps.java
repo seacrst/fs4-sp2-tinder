@@ -19,7 +19,7 @@ public class ResourcesOps {
                        .getResource(dir)
                        .toURI()
                        .getPath();
-               if (resourse.startsWith("/")) resourse = resourse.substring(1);
+//               if (resourse.startsWith("/")) resourse = resourse.substring(1);
                return resourse;
            } catch (URISyntaxException e) {
                throw new RuntimeException(String.format("Requested path `%s`not found", dir), e);

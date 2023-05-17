@@ -15,6 +15,7 @@ public class StaticContentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
+        if (pathInfo.startsWith("/")) pathInfo = pathInfo.substring(1);
         Path file = Path.of(staticLocation, pathInfo.trim());
         if (!file.toFile().exists()) {
             resp.setStatus(404);
