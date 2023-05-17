@@ -28,7 +28,6 @@ public class UserDao implements DAO<User> {
     public User getByIndex(int index) {
         return users.get(index);
     }
-    @Override
     public List<User> getAll() {
         return users;
     }

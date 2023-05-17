@@ -366,4 +366,8 @@ input:focus{
 .msg-box input:focus{
   outline: none;
 }
+.liked-page__form{
+width: 100%;
+display: flex;
+}
 

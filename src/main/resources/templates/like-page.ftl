@@ -26,11 +26,13 @@
                     <h3 class="mb-0 text-truncated">${name}</h3>
                     <br>
                 </div>
-                <form method="POST" action="/users">
-                    <div class="col-12 col-lg-6">
+                <form method="POST" action="/users" class="liked-page__form">
+                    <div class="col-12 col-lg-6" >
+                        <input type="hidden" name="id" value=${id}>
                         <button type="submit" name="answer" value="no" class="btn btn-outline-danger btn-block"><span class="fa fa-times"></span> Dislike</button>
                     </div>
                     <div class="col-12 col-lg-6">
+                        <input type="hidden" name="id" value=${id}>
                         <button type="submit" name="answer" value="yes" class="btn btn-outline-success btn-block"><span class="fa fa-heart"></span> Like</button>
                     </div>
                 </form>
