@@ -25,7 +25,7 @@ public class Main {
 
 
         // міграція
-        // DataBase.checkAndApplyDeltas();
+        // DataBase.checkAndApplyDeltas(config);
 
         Connection connection = DataBase.connect(config).orElseThrow();
 

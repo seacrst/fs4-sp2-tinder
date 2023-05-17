@@ -14,9 +14,9 @@ public class DataBase {
     public static final String URL = "jdbc:postgresql://localhost:5432/postgres";
     public static final String USERNAME = "postgres";
     public static final String PASSWORD = "pg123456";
-    public static void checkAndApplyDeltas() {
+    public static void checkAndApplyDeltas(Config serviceConfig) {
         FluentConfiguration conf = new FluentConfiguration()
-                .dataSource(URL, USERNAME, PASSWORD);
+                .dataSource(serviceConfig.url(), serviceConfig.username(), serviceConfig.password());
         Flyway flyway = new Flyway(conf);
         flyway.migrate();
     }
