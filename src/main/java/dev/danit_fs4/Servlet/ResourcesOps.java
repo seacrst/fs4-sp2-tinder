@@ -1,5 +1,6 @@
 package dev.danit_fs4.Servlet;
 
+import dev.danit_fs4.Main;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
@@ -12,25 +13,25 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class ResourcesOps {
-        public static String dirUnsafe(String dir){
-           try {
-               String resourse =  ResourcesOps.class
-                       .getClassLoader()
-                       .getResource(dir)
-                       .toURI()
-                       .getPath();
-//               if (resourse.startsWith("/")) resourse = resourse.substring(1);
-               return resourse;
-           } catch (URISyntaxException e) {
-               throw new RuntimeException(String.format("Requested path `%s`not found", dir), e);
-           }
-        }
+//        public static String dirUnsafe(String dir){
+//           try {
+//               String resourse =  ResourcesOps.class
+//                       .getClassLoader()
+//                       .getResource(dir)
+//                       .toURI()
+//                       .getPath();
+////               if (resourse.startsWith("/")) resourse = resourse.substring(1);
+//               return resourse;
+//           } catch (URISyntaxException e) {
+//               throw new RuntimeException(String.format("Requested path `%s`not found", dir), e);
+//           }
+//        }
 
         public static void writeInto(HttpServletResponse resp, Map<String, Object> data, String template) throws IOException {
             Configuration cfg = new Configuration(Configuration.VERSION_2_3_32);
             cfg.setDefaultEncoding(String.valueOf(StandardCharsets.UTF_8));
-            cfg.setDirectoryForTemplateLoading(new File(ResourcesOps.dirUnsafe("templates")));
-
+//            cfg.setDirectoryForTemplateLoading(new File(ResourcesOps.dirUnsafe("templates")));
+            cfg.setClassForTemplateLoading(ResourcesOps.class, "/templates");
             try (PrintWriter w = resp.getWriter()) {
                 cfg
                         .getTemplate(template)

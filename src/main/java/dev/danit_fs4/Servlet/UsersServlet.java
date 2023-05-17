@@ -1,12 +1,19 @@
 package dev.danit_fs4.Servlet;
 
 import dev.danit_fs4.DAO.UserDatabaseDao;
+import dev.danit_fs4.Main;
+import freemarker.template.Configuration;
+import freemarker.template.TemplateException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 public class UsersServlet extends HttpServlet {
@@ -28,9 +35,16 @@ public class UsersServlet extends HttpServlet {
 //                    .forEach(w::println);
 //        }
 
-//        Configuration cfg = new Configuration(Configuration.VERSION_2_3_32);
-//        cfg.setDefaultEncoding(String.valueOf(StandardCharsets.UTF_8));
-//        cfg.setDirectoryForTemplateLoading(new File(ResourcesOps.dirUnsafe("templates")));
+        Configuration cfg = new Configuration(Configuration.VERSION_2_3_32);
+        cfg.setDefaultEncoding(String.valueOf(StandardCharsets.UTF_8));
+        String classLoader = null;
+//        try {
+//            classLoader = getClass().getClassLoader().getResource("templates").toURI().getPath();
+//        } catch (URISyntaxException e) {
+//            throw new RuntimeException(e);
+//        }
+
+//        cfg.setClassForTemplateLoading(Main.class, "/templates");
 
         HashMap<String, Object> data = new HashMap<>();
         // data from DB List
@@ -52,7 +66,6 @@ public class UsersServlet extends HttpServlet {
 //        }
         ResourcesOps.writeInto(resp, data,"like-page.ftl");
     }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         submitAnswer(req.getParameter("answer"), req.getParameter("id"));
