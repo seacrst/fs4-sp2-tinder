@@ -1,5 +1,6 @@
 package dev.danit_fs4.db;
 
+import dev.danit_fs4.config.Config;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.configuration.FluentConfiguration;
 
@@ -10,9 +11,9 @@ import java.util.Optional;
 import java.util.Properties;
 
 public class DataBase {
-    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "pg123456";
+    public static final String URL = "jdbc:postgresql://localhost:5432/postgres";
+    public static final String USERNAME = "postgres";
+    public static final String PASSWORD = "pg123456";
     public static void checkAndApplyDeltas() {
         FluentConfiguration conf = new FluentConfiguration()
                 .dataSource(URL, USERNAME, PASSWORD);
@@ -33,8 +34,8 @@ public class DataBase {
         }
     }
 
-    public static Optional<Connection> connect() {
-        return connect(URL, USERNAME, PASSWORD);
+    public static Optional<Connection> connect(Config config) {
+        return connect(config.url(), config.username(), config.password());
     }
 
 }

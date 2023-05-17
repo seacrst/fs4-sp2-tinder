@@ -6,6 +6,8 @@ import dev.danit_fs4.Servlet.LoginServlet;
 import dev.danit_fs4.Servlet.StaticContentServlet;
 import dev.danit_fs4.Servlet.TestServlet;
 import dev.danit_fs4.Servlet.UsersServlet;
+import dev.danit_fs4.config.Config;
+import dev.danit_fs4.config.HerokuConfig;
 import dev.danit_fs4.db.DataBase;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -19,13 +21,15 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        Config config = new HerokuConfig();
+
+
         // міграція
         // DataBase.checkAndApplyDeltas();
 
-        Connection connection = DataBase.connect().orElseThrow();
+        Connection connection = DataBase.connect(config).orElseThrow();
 
-
-        Server server = new Server(8080);
+        Server server = new Server(config.port(8080));
 
         ServletContextHandler handler = new ServletContextHandler();
         UserDao dao = new UserDao();
