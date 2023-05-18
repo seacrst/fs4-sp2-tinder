@@ -1,13 +1,12 @@
-version: '3.3'
-
+version: '3'
 services:
   postgres:
-    image: postgres:9.6
-    restart: unless-stopped
+    image: 'postgres'
+    restart: on-failure
     environment:
       POSTGRES_USER: 'postgres'
       POSTGRES_DB: 'postgres'
       POSTGRES_PASSWORD: 'pg123456'
     ports:
-      - '5432:5432'
-    container_name: pg_0
+      - "5432:5432"
+    container_name: pg_1
