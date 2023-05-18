@@ -27,7 +27,7 @@ public class DataBase {
             properties.setProperty("password", password);
             properties.setProperty("autoReconnect", "true");
 
-            return Optional.of(DriverManager.getConnection(url, properties));
+            return Optional.of(DriverManager.getConnection(url));
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return Optional.empty();
