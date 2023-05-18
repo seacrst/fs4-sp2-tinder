@@ -2,10 +2,7 @@ package dev.danit_fs4;
 
 import dev.danit_fs4.DAO.UserDao;
 import dev.danit_fs4.DAO.UserDatabaseDao;
-import dev.danit_fs4.Servlet.LoginServlet;
-import dev.danit_fs4.Servlet.StaticContentServlet;
-import dev.danit_fs4.Servlet.TestServlet;
-import dev.danit_fs4.Servlet.UsersServlet;
+import dev.danit_fs4.Servlet.*;
 import dev.danit_fs4.config.Config;
 import dev.danit_fs4.config.HerokuConfig;
 import dev.danit_fs4.db.DataBase;
@@ -38,6 +35,7 @@ public class Main {
         handler.addServlet(new ServletHolder(new StaticContentServlet()),"/static/*");
         handler.addServlet(new ServletHolder(new LoginServlet(userDatabaseDao)),"/login");
         handler.addServlet(new ServletHolder(new UsersServlet(userDatabaseDao)),"/users");
+        handler.addServlet(new ServletHolder(new MessageServlet()),"/message");
 
         server.setHandler(handler);
         server.start();
