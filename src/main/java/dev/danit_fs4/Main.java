@@ -31,11 +31,12 @@ public class Main {
         ServletContextHandler handler = new ServletContextHandler();
         UserDao dao = new UserDao();
         UserDatabaseDao userDatabaseDao = new UserDatabaseDao(connection);
+
         handler.addServlet(new ServletHolder(new TestServlet()),"/");
         handler.addServlet(new ServletHolder(new StaticContentServlet()),"/static/*");
         handler.addServlet(new ServletHolder(new LoginServlet(userDatabaseDao)),"/login");
         handler.addServlet(new ServletHolder(new UsersServlet(userDatabaseDao)),"/users");
-        handler.addServlet(new ServletHolder(new MessageServlet()),"/message");
+        handler.addServlet(new ServletHolder(new MessageServlet()),"/messages/*");
 
         server.setHandler(handler);
         server.start();
