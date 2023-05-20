@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +27,8 @@ public class UserDatabaseDao implements DAO<User> {
 
     @Override
     public Optional<User> load(int id) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement("SELECT id, name, photo FROM users WHERE id = ?");
+        String sql = "SELECT id, name, photo FROM users WHERE id = ?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
         if(rs.next()){
@@ -39,7 +42,8 @@ public class UserDatabaseDao implements DAO<User> {
     }
 
     public List<User> getAll() throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement("SELECT id, name, photo FROM users ");
+        String sql = "SELECT id, name, photo FROM users";
+        PreparedStatement stmt = connection.prepareStatement(sql);
         ResultSet rs = stmt.executeQuery();
         List<User> list = new ArrayList<>();
         while (rs.next()){
@@ -53,7 +57,8 @@ public class UserDatabaseDao implements DAO<User> {
         return list;
     }
     public List<User> getAll(int id) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement("SELECT id, name, photo FROM users WHERE id != ? ");
+        String sql = "SELECT id, name, photo FROM users WHERE id != ?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
         List<User> list = new ArrayList<>();
@@ -69,76 +74,79 @@ public class UserDatabaseDao implements DAO<User> {
     }
     public Integer size() {
         try {
-            return getAll().size();
+            return getAll().size()-1;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    public User getNext(int index) {
+    public User getNext(int index, int id) {
         try {
-            return getAll().get(index);
+            return getAll(id).get(index);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
     @Override
     public void delete(int id) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement("DELETE FROM users WHERE id = ?");
+        String sql = "DELETE FROM users WHERE id = ?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setInt(1, id);
         stmt.executeUpdate();
     }
 
     private void insert(User userProfile) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement("INSERT INTO users (name, photo) values (?, ?)");
+        String sql = "INSERT INTO users (name, photo) values (?, ?)";
+        PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setString(1, userProfile.getName());
         stmt.setString(2, userProfile.getPhoto());
         stmt.execute();
     }
     private void update(User userProfile) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement("UPDATE users SET name =?, photo =? WHERE id =?");
+        String sql = "UPDATE users SET name =?, photo =? WHERE id =?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setString(1, userProfile.getName());
         stmt.setString(2, userProfile.getPhoto());
         stmt.setInt(3, userProfile.id());
         stmt.execute();
     }
-    public void addLikedUser(int i){
-        try{
-            Optional<User> likedUser = load(i);
-            if (likedUser.isPresent()){
-                if(!likes.contains(likedUser.get())) likes.add(likedUser.get());
-                else likes.set(likes.indexOf(likedUser.get()), likedUser.get());
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public void removeLikedUser(int i){
-        try{
-            Optional<User> likedUser = load(i);
-            likedUser.ifPresent(likes::remove);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public List<User> getLiked(){
-        return likes;
-    }
 
-//    List<Integer> list = new ArrayList<>();
-//    public Integer get(int i) throws SQLException {
-//        PreparedStatement stmt = connection.prepareStatement("SELECT id FROM users ");
-//        ResultSet rs = stmt.executeQuery();
-//        List<Integer> list = new ArrayList<>();
-//        while (rs.next()){
-//            list.add(rs.getInt("id"));
-//        }
-//        return list.get(i);
-//    }
-//    public Optional<User> getNextUser(int index) {
-//        try {
-//            return load(get(index));
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+
+    public Map<String, String> getAuthData (String email) throws SQLException {
+        HashMap <String, String> data = new HashMap<>();
+        String sql = "SELECT email, password FROM users WHERE email = ?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setString(1, email);
+        ResultSet rs = stmt.executeQuery();
+        while(rs.next()){
+
+            data.put(
+                    rs.getString("email"),
+                    rs.getString("password")
+            );
+        }
+        return data;
+    }
+    public void updateCookie(String uuid, String email) throws SQLException {
+        String sql = "UPDATE users SET uuid =? WHERE email =?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setString(1, uuid);
+        stmt.setString(2, email);
+        stmt.execute();
+    }
+    public void updateCookie(String uuid) throws SQLException {
+        String sql = "UPDATE users SET uuid = NULL WHERE uuid =?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setString(1, uuid);
+        stmt.execute();
+    }
+    public Optional<Integer> getId(String uuid) throws SQLException {
+        String sql = "SELECT id FROM users WHERE uuid = ?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setString(1, uuid);
+        ResultSet rs = stmt.executeQuery();
+        if(rs.next()){
+            return Optional.of(rs.getInt("id"));
+        }
+        return Optional.empty();
+    }
 }

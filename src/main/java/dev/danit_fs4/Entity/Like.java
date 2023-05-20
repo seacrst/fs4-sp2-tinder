@@ -13,7 +13,11 @@ public class Like implements Identifiable {
         this.userId = userId;
         this.likedUserId = likedUserId;
     }
-
+    public Like(int userId, int likedUserId) {
+        this.id = null;
+        this.userId = userId;
+        this.likedUserId = likedUserId;
+    }
     public Integer userid() {
         return userId;
     }
