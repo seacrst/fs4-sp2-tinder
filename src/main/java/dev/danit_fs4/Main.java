@@ -1,5 +1,6 @@
 package dev.danit_fs4;
 
+import dev.danit_fs4.DAO.LikeDao;
 import dev.danit_fs4.DAO.UserDao;
 import dev.danit_fs4.DAO.UserDatabaseDao;
 import dev.danit_fs4.Servlet.*;
@@ -31,11 +32,14 @@ public class Main {
         ServletContextHandler handler = new ServletContextHandler();
         UserDao dao = new UserDao();
         UserDatabaseDao userDatabaseDao = new UserDatabaseDao(connection);
-        handler.addServlet(new ServletHolder(new TestServlet()),"/");
+        LikeDao LD = new LikeDao(connection);
+
+//        handler.addServlet(new ServletHolder(new TestServlet()),"/");
         handler.addServlet(new ServletHolder(new StaticContentServlet()),"/static/*");
         handler.addServlet(new ServletHolder(new LoginServlet(userDatabaseDao)),"/login");
-        handler.addServlet(new ServletHolder(new UsersServlet(userDatabaseDao)),"/users");
-        handler.addServlet(new ServletHolder(new MessageServlet()),"/message");
+        handler.addServlet(new ServletHolder(new UsersServlet(userDatabaseDao, LD)),"/users");
+        handler.addServlet(new ServletHolder(new MessageServlet()),"/messages/*");
+        handler.addServlet(new ServletHolder(new LikeServlet(connection)),"/liked");
 
         server.setHandler(handler);
         server.start();
