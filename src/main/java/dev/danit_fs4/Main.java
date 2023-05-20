@@ -36,6 +36,7 @@ public class Main {
         handler.addServlet(new ServletHolder(new LoginServlet(userDatabaseDao)),"/login");
         handler.addServlet(new ServletHolder(new UsersServlet(userDatabaseDao)),"/users");
         handler.addServlet(new ServletHolder(new MessageServlet()),"/message");
+        handler.addServlet(new ServletHolder(new LikeServlet(connection)),"/liked");
 
         server.setHandler(handler);
         server.start();
