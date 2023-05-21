@@ -8,7 +8,7 @@ create table if not exists users
     password text not null,
     name       text,
     photo      text,
-    uuid       uuid
+    uuid       text
 );
 INSERT INTO users (email, password, name, photo) VALUES('john@gmail.com', '12345', 'John', 'https://robohash.org/68.186.255.198.png');
 INSERT INTO users (email, password, name, photo) VALUES('mary@gmail.com', '11111', 'Mary', 'https://images.pexels.com/photos/2913125/pexels-photo-2913125.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
