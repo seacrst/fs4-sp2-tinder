@@ -14,6 +14,22 @@
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .link, .link:hover {
+            text-decoration: none;
+            color: #1d2124;
+        }
+        .bt {
+            box-sizing: border-box;
+            color: #1d2124;
+            border: 1px solid #1d2124;
+            border-radius: 8px; padding: 4px;
+        }
+        .bt:hover {
+            background-color: #1d2124;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
 
@@ -31,18 +47,29 @@
                             <#list users as user>
                                 <tr>
                                     <td width="10">
-                                        <div class="avatar-img">
-                                            <img class="img-circle" src=${user.photo} alt="photo" />
-                                        </div>
+                                        <a href="/messages/${user.name}">
+                                            <div class="avatar-img">
+                                                <img class="img-circle" src=${user.photo} alt="photo" />
+                                            </div>
+                                        </a>
                                     </td>
                                     <td class="align-middle">
-                                        ${user.name}
+                                        <a href="/messages/${user.name}" class="link">${user.name}</a>
                                     </td>
                                     <td class="align-middle">
                                         Builder Sales Agent
                                     </td>
                                     <td  class="align-middle">
                                         Last Login:  6/10/2017<br><small class="text-muted">5 days ago</small>
+                                    </td>
+                                </tr>
+                            <#else>
+                                <tr>
+                                    <td class="align-middle">
+                                        No one has been liked
+                                    </td>
+                                    <td class="align-middle">
+                                        <a href="/users" class="bt link">Try again</a>
                                     </td>
                                 </tr>
                             </#list>

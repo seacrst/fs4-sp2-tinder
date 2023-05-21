@@ -11,10 +11,11 @@ import freemarker.template.TemplateNotFoundException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class View {
-
     private final Configuration templateConfig = TemplateService.config();
 
     public View (String resources) {
@@ -22,16 +23,10 @@ public class View {
     }
     public void renderUsers(PrintWriter write, List<User> users, String template) {
         try(write) {
-            templateConfig.getTemplate(template).process(users, write);
-        } catch (TemplateNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        } catch (MalformedTemplateNameException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (TemplateException e) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("users", users);
+            templateConfig.getTemplate(template).process(map, write);
+        } catch (TemplateException | IOException e) {
             throw new RuntimeException(e);
         }
     }

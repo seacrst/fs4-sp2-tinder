@@ -31,8 +31,6 @@ public class LikeServlet extends HttpServlet {
         List<Like> likes = service.getAll();
         List<User> likedUsers = service.getLikedUsers(likes);
 
-        System.out.printf("LIKED USERS ==> %d", likedUsers.size());
-
         view.renderUsers(writer, likedUsers, "liked-users.ftl");
     }
 }
