@@ -23,7 +23,11 @@ public class View {
     public void renderUsers(PrintWriter write, List<User> users, String template) {
         try(write) {
             templateConfig.getTemplate(template).process(users, write);
-        } catch (TemplateNotFoundException | ParseException | MalformedTemplateNameException e) {
+        } catch (TemplateNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } catch (MalformedTemplateNameException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
