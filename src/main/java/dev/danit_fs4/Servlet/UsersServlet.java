@@ -18,7 +18,7 @@ public class UsersServlet extends HttpServlet {
     private final UserDatabaseDao users;
     private final LikeDao like;
     private Integer currInd = 0;
-    private Integer activeUser=1;
+    private Integer activeUser;
     public UsersServlet(UserDatabaseDao users, LikeDao like) {
         this.users = users;
         this.like = like;
@@ -70,8 +70,10 @@ public class UsersServlet extends HttpServlet {
     }
     private void setActiveUser(HttpServletRequest req){
         try {
-            Optional<Integer> id = users.getId(Auth.getCookie(req));
-            id.ifPresent(integer -> activeUser = integer);
+            if(Auth.getCookie(req).isPresent()) {
+                Optional<Integer> id = users.getId(Auth.getCookie(req).get());
+                id.ifPresent(integer -> activeUser = integer);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

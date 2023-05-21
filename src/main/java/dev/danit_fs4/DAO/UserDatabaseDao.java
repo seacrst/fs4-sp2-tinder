@@ -57,7 +57,7 @@ public class UserDatabaseDao implements DAO<User> {
         return list;
     }
     public List<User> getAll(int id) throws SQLException {
-        String sql = "SELECT id, name, photo FROM users WHERE id != ?";
+        String sql = "SELECT id, name, photo FROM users WHERE id != ? ORDER BY id";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
