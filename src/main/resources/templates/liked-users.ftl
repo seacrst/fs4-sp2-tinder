@@ -47,14 +47,14 @@
                             <#list users as user>
                                 <tr>
                                     <td width="10">
-                                        <a href="/messages/${user.name}">
+                                        <a href="/messages/${user.getId()}">
                                             <div class="avatar-img">
                                                 <img class="img-circle" src=${user.photo} alt="photo" />
                                             </div>
                                         </a>
                                     </td>
                                     <td class="align-middle">
-                                        <a href="/messages/${user.name}" class="link">${user.name}</a>
+                                        <a href="/messages/${user.getId()}" class="link">${user.name}</a>
                                     </td>
                                     <td class="align-middle">
                                         Builder Sales Agent

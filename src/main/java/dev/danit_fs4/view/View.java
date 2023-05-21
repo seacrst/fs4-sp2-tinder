@@ -23,9 +23,9 @@ public class View {
     }
     public void renderUsers(PrintWriter write, List<User> users, String template) {
         try(write) {
-            Map<String, Object> map = new HashMap<>();
+            Map<String, Object> data = new HashMap<>();
             map.put("users", users);
-            templateConfig.getTemplate(template).process(map, write);
+            templateConfig.getTemplate(template).process(data, write);
         } catch (TemplateException | IOException e) {
             throw new RuntimeException(e);
         }
