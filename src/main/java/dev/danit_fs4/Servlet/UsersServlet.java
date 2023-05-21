@@ -2,20 +2,13 @@ package dev.danit_fs4.Servlet;
 
 import dev.danit_fs4.DAO.LikeDao;
 import dev.danit_fs4.DAO.UserDatabaseDao;
-import dev.danit_fs4.Entity.Like;
-import dev.danit_fs4.Main;
-import freemarker.template.Configuration;
-import freemarker.template.TemplateException;
+import dev.danit_fs4.Utils.Auth;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Optional;
@@ -45,6 +38,7 @@ public class UsersServlet extends HttpServlet {
 //        data.put("name", userDao.getByIndex(currentUserIndex).getName());
 //        data.put("photo", userDao.getByIndex(currentUserIndex).getPhoto());
 
+        setActiveUser(req);
         // data from DB conn
         HashMap<String, Object> data = new HashMap<>();
         data.put("id", users.getNext(currInd, activeUser).getId());
@@ -73,5 +67,13 @@ public class UsersServlet extends HttpServlet {
         if (userAnswer.equals("yes")) like.addLiked(activeUser, id);
         if (userAnswer.equals("no")) like.removeLikedUser(activeUser, id);
         currInd++;
+    }
+    private void setActiveUser(HttpServletRequest req){
+        try {
+            Optional<Integer> id = users.getId(Auth.getCookie(req));
+            id.ifPresent(integer -> activeUser = integer);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -110,7 +110,6 @@ public class UserDatabaseDao implements DAO<User> {
         stmt.execute();
     }
 
-
     public Map<String, String> getAuthData (String email) throws SQLException {
         HashMap <String, String> data = new HashMap<>();
         String sql = "SELECT email, password FROM users WHERE email = ?";

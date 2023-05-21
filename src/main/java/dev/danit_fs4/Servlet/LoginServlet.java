@@ -49,8 +49,7 @@ public class LoginServlet extends HttpServlet {
             authData = users.getAuthData(email);
             System.out.println(authData);
             if (authData.isEmpty()) return false;
-            if (authData.get(email).equals(password)) return true;
-            return false;
+            return authData.get(email).equals(password);
         }catch (SQLException e) {
             throw new RuntimeException(e);
         }
