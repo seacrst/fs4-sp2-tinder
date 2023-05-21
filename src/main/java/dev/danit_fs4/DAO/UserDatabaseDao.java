@@ -57,7 +57,7 @@ public class UserDatabaseDao implements DAO<User> {
         return list;
     }
     public List<User> getAll(int id) throws SQLException {
-        String sql = "SELECT id, name, photo FROM users WHERE id != ?";
+        String sql = "SELECT id, name, photo FROM users WHERE id != ? ORDER BY id";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
@@ -109,7 +109,6 @@ public class UserDatabaseDao implements DAO<User> {
         stmt.setInt(3, userProfile.id());
         stmt.execute();
     }
-
 
     public Map<String, String> getAuthData (String email) throws SQLException {
         HashMap <String, String> data = new HashMap<>();
