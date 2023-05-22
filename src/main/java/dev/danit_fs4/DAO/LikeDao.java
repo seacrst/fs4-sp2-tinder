@@ -2,6 +2,7 @@ package dev.danit_fs4.DAO;
 
 import dev.danit_fs4.Entity.Like;
 import dev.danit_fs4.Entity.User;
+import dev.danit_fs4.db.DataBase;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,12 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class LikeDao implements DAO<Like>{
-    private final Connection connection;
-    private final UserDao userDao;
-    public LikeDao(UserDao userDao, Connection connection) {
-        this.connection = connection;
-        this.userDao = userDao;
-    }
+    private final Connection connection = DataBase.getConnection();
+    private final UserDao userDao = new UserDao();
     @Override
     public void save(Like like) throws SQLException {
         String sql = "INSERT INTO liked (user_id, liked_user_id) VALUES (?, ?)";

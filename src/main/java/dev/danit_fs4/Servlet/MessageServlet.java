@@ -21,17 +21,11 @@ import java.util.Optional;
 
 public class MessageServlet extends HttpServlet {
 
-    private final MessageDataBaseDao messages;
+    private final MessageDataBaseDao messages = new MessageDataBaseDao();
 //    private final UserDatabaseDao users;
-    private final UserService users;
-    private final AccountService AS;
+    private final UserService users = new UserService();
+    private final AccountService accountService = new AccountService();
     private Integer hostId;
-
-    public MessageServlet(MessageDataBaseDao messages, UserService users, AccountService AS) {
-        this.messages = messages;
-        this.users = users;
-        this.AS = AS;
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -92,7 +86,7 @@ public class MessageServlet extends HttpServlet {
     private void setActiveUser(HttpServletRequest req){
 
             if(Auth.getCookie(req).isPresent()) {
-                Integer id = AS.getId(Auth.getCookie(req).get());
+                Integer id = accountService.getId(Auth.getCookie(req).get());
                 hostId = id;
             }
 

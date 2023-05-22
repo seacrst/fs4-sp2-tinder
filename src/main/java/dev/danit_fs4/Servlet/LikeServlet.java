@@ -15,19 +15,15 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class LikeServlet extends HttpServlet {
-    private final LikeDao likeDao;
-    private final AccountService AS;
+    private final LikeDao likeDao = new LikeDao();
+    private final AccountService accountService = new AccountService();
 
-    public LikeServlet(LikeDao likeDao, AccountService AS) {
-        this.likeDao = likeDao;
-        this.AS =AS;
-    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         PrintWriter writer = res.getWriter();
         if(Auth.getCookie(req).isPresent()) {
 
-            Integer uid = AS.getId(Auth.getCookie(req).get());
+            Integer uid = accountService.getId(Auth.getCookie(req).get());
             List<User> likedUsers = likeDao.getLikedUsers(uid);
             View view = new View("/templates");
             view.renderUsers(writer, likedUsers, "liked-users.ftl");

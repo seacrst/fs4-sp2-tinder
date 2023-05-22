@@ -1,7 +1,10 @@
 package dev.danit_fs4.services;
 
 import dev.danit_fs4.DAO.AccountDao;
+import dev.danit_fs4.DAO.LikeDao;
+import dev.danit_fs4.DAO.UserDao;
 import dev.danit_fs4.Entity.Account;
+import dev.danit_fs4.db.DataBase;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -9,12 +12,9 @@ import java.util.Map;
 import java.util.Optional;
 
 public class AccountService {
-    public final AccountDao AD;
+    public final AccountDao AD = new AccountDao(DataBase.getConnection());
+    public final LikeDao likeDao = new LikeDao();
     Map<String, Account> authData = new HashMap<>();
-
-    public AccountService(AccountDao ad) {
-        this.AD = ad;
-    }
 
     public boolean check(String email, String password) {
         try {

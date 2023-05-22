@@ -11,15 +11,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class LogoutServlet extends HttpServlet {
-    private final AccountService user;
-
-    public LogoutServlet(AccountService user) {
-        this.user = user;
-    }
+    private final AccountService accountService = new AccountService();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            Auth.logout(req, resp, user);
+            Auth.logout(req, resp, accountService);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

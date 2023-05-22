@@ -28,29 +28,32 @@ public class Main {
 
 
         // міграція
-//         DataBase.checkAndApplyDeltas(config);
+         DataBase.checkAndApplyDeltas(config);
 
         Connection connection = DataBase.connect(config).orElseThrow();
+        DataBase.setConnection(connection);
 
         Server server = new Server(config.port(8080));
 
         ServletContextHandler handler = new ServletContextHandler();
         UserListDao dao = new UserListDao();
-        UserDao userDao = new UserDao(connection);
-        LikeDao likeDao = new LikeDao(userDao, connection);
-        AccountDao AD = new AccountDao(connection);
-        AccountService AS =new AccountService(AD);
-        UserService US =new UserService(userDao);
-        MessageDataBaseDao msgDataBaseDao =new MessageDataBaseDao(connection);
+//        UserDao userDao = new UserDao(connection);
+//        LikeDao likeDao = new LikeDao(userDao, connection);
+//        AccountDao AD = new AccountDao(connection);
+//        AccountService AS = new AccountService(AD);
+//        UserService US =new UserService(userDao);
+//        MessageDataBaseDao msgDataBaseDao =new MessageDataBaseDao(connection);
+
 //        handler.addServlet(new ServletHolder(new TestServlet()),"/");
         handler.addServlet(new ServletHolder(new StaticContentServlet()),"/static/*");
-        handler.addServlet(new ServletHolder(new LoginServlet(AS)),"/login");
-        handler.addServlet(new ServletHolder(new UsersServlet(US, likeDao, AS)),"/users");
+//        handler.addServlet(new ServletHolder(new LoginServlet(AS)),"/login");
+        handler.addServlet(new ServletHolder(new UsersServlet()),"/users");
 //        handler.addServlet(new ServletHolder(new MessageServlet()),"/messages/*");
-        handler.addServlet(new ServletHolder(new LikeServlet(likeDao, AS)),"/liked");
-        handler.addServlet(new ServletHolder(new LoginServlet(AS)),"/login");
+        handler.addServlet(new ServletHolder(new LikeServlet()),"/liked");
+        handler.addServlet(new ServletHolder(new LoginServlet()),"/login");
 //        handler.addServlet(new ServletHolder(new UsersServlet(userDatabaseDao, LD)),"/users");
-        handler.addServlet(new ServletHolder(new MessageServlet(msgDataBaseDao, US, AS)),"/messages/*");
+        handler.addServlet(new ServletHolder(new MessageServlet()),"/messages/*");
+        handler.addServlet(new ServletHolder(new LogoutServlet()),"/logout");
 //        handler.addServlet(new ServletHolder(new LikeServlet(connection)),"/liked");
 
         server.setHandler(handler);

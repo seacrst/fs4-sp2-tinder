@@ -11,9 +11,10 @@ import java.util.Optional;
 import java.util.Properties;
 
 public class DataBase {
+    private static Connection connection;
     public static final String URL = "jdbc:postgresql://localhost:5432/postgres";
     public static final String USERNAME = "postgres";
-    public static final String PASSWORD = "12345";
+    public static final String PASSWORD = "pg123456";
     public static void checkAndApplyDeltas(Config serviceConfig) {
         FluentConfiguration conf = new FluentConfiguration()
                 .dataSource(serviceConfig.url(), serviceConfig.username(), serviceConfig.password());
@@ -36,6 +37,14 @@ public class DataBase {
 
     public static Optional<Connection> connect(Config config) {
         return connect(config.url(), config.username(), config.password());
+    }
+
+    public static void setConnection(Connection con) {
+        connection = con;
+    }
+
+    public static Connection getConnection() {
+        return connection;
     }
 
 }

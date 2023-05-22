@@ -1,6 +1,7 @@
 package dev.danit_fs4.DAO;
 
 import dev.danit_fs4.Entity.User;
+import dev.danit_fs4.db.DataBase;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,10 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserDao implements DAO<User> {
-    private final Connection connection;
-    public UserDao(Connection connection) {
-        this.connection = connection;
-    }
+    private final Connection connection = DataBase.getConnection();
 
     @Override
     public void save(User user) throws SQLException {

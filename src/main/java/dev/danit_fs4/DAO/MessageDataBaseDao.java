@@ -2,6 +2,7 @@ package dev.danit_fs4.DAO;
 
 import dev.danit_fs4.Entity.Message;
 import dev.danit_fs4.Entity.User;
+import dev.danit_fs4.db.DataBase;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,11 +17,7 @@ public class MessageDataBaseDao implements DAO<Message> {
 //    private final List<Message> messages = new ArrayList<>();
 
 
-    private final Connection connection;
-
-    public MessageDataBaseDao(Connection connection) {
-        this.connection = connection;
-    }
+    private final Connection connection = DataBase.getConnection();
 
     @Override
     public void save(Message msg) throws SQLException {
