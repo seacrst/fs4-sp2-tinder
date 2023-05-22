@@ -1,7 +1,7 @@
 package dev.danit_fs4.Servlet;
 
 import dev.danit_fs4.DAO.LikeDao;
-import dev.danit_fs4.Utils.AuthService;
+import dev.danit_fs4.Utils.Auth;
 import dev.danit_fs4.services.AccountService;
 import dev.danit_fs4.services.UserService;
 
@@ -57,8 +57,8 @@ public class UsersServlet extends HttpServlet {
         currInd++;
     }
     private void setActiveUser(HttpServletRequest req){
-        if(AuthService.getCookie(req).isPresent()) {
-            activeUser = AS.getId(AuthService.getCookie(req).get());
+        if(Auth.getCookie(req).isPresent()) {
+            activeUser = AS.getId(Auth.getCookie(req).get());
         }
     }
 }

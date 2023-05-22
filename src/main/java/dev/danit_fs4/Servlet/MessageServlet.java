@@ -1,11 +1,12 @@
 package dev.danit_fs4.Servlet;
 
 import dev.danit_fs4.DAO.MessageDataBaseDao;
-import dev.danit_fs4.DAO.UserDatabaseDao;
 import dev.danit_fs4.Entity.Chat;
 import dev.danit_fs4.Entity.Message;
 import dev.danit_fs4.Utils.Auth;
 import dev.danit_fs4.Utils.ViewMessage;
+import dev.danit_fs4.services.AccountService;
+import dev.danit_fs4.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,12 +22,15 @@ import java.util.Optional;
 public class MessageServlet extends HttpServlet {
 
     private final MessageDataBaseDao messages;
-    private final UserDatabaseDao users;
+//    private final UserDatabaseDao users;
+    private final UserService users;
+    private final AccountService AS;
     private Integer hostId;
 
-    public MessageServlet(MessageDataBaseDao messages, UserDatabaseDao users) {
+    public MessageServlet(MessageDataBaseDao messages, UserService users, AccountService AS) {
         this.messages = messages;
         this.users = users;
+        this.AS = AS;
     }
 
     @Override
@@ -68,12 +72,10 @@ public class MessageServlet extends HttpServlet {
         //Отримуємо імена користувача та гостя в hostName та guestName
         String hostName;
         String guestName;
-        try{
-            hostName = users.load(hostId).get().getName();
-            guestName = users.load(guestId).get().getName();
-        }catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
+            hostName = users.getUser(hostId).get().getName();
+            guestName = users.getUser(guestId).get().getName();
+
 
         // формуємо чат-об'єкт
         Chat chat = new Chat(messagesHistory, hostId, guestId, hostName, guestName);
@@ -88,14 +90,12 @@ public class MessageServlet extends HttpServlet {
     }
 
     private void setActiveUser(HttpServletRequest req){
-        try {
+
             if(Auth.getCookie(req).isPresent()) {
-                Optional<Integer> id = users.getId(Auth.getCookie(req).get());
-                id.ifPresent(integer -> hostId = integer);
+                Integer id = AS.getId(Auth.getCookie(req).get());
+                hostId = id;
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
 }

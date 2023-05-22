@@ -1,17 +1,18 @@
 package dev.danit_fs4.Utils;
 
+import dev.danit_fs4.services.AccountService;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public class AuthService {
+public class Auth {
     public static String cookieName = "UUID";
     public static Optional<String> getCookie(HttpServletRequest req){
         Cookie[] cookies = req.getCookies() != null ? req.getCookies() : new Cookie[0];
@@ -31,14 +32,14 @@ public class AuthService {
         resp.addCookie(cookie);
     }
 
-    public static void logout(HttpServletRequest req, HttpServletResponse res, UserDatabaseDao user) throws SQLException, IOException {
+    public static void logout(HttpServletRequest req, HttpServletResponse res, AccountService user) throws SQLException, IOException {
         Optional<String> cookie = getCookie(req);
         if (cookie.isEmpty()) return;
 
         Optional<Cookie> uuid = Arrays.stream(req.getCookies()).filter(c -> c.getName().equals("UUID")).findFirst();
         uuid.ifPresent(c -> c.setMaxAge(0));
 
-        user.updateCookie(cookie.get());
+        user.deleteCookie(cookie.get());
         res.sendRedirect("/login");
     }
 }
