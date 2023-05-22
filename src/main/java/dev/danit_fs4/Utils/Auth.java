@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -23,7 +24,11 @@ public class Auth {
     public static void logout(HttpServletRequest req, HttpServletResponse res, UserDatabaseDao user) throws SQLException, IOException {
         Optional<String> cookie = getCookie(req);
 
+        Optional<Cookie> uuid = Arrays.stream(req.getCookies()).filter(c -> c.getName().equals("UUID")).findFirst();
+        uuid.ifPresent(c -> c.setMaxAge(0));
+
         if (cookie.isEmpty()) return;
+
 
         user.updateCookie(cookie.get());
         res.sendRedirect("/login");
