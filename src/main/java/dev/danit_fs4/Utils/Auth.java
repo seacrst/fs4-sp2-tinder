@@ -36,10 +36,8 @@ public class Auth {
         Optional<String> cookie = getCookie(req);
         if (cookie.isEmpty()) return;
 
-        Optional<Cookie> uuid = Arrays.stream(req.getCookies()).filter(c -> c.getName().equals("UUID")).findFirst();
-        uuid.ifPresent(c -> c.setMaxAge(0));
-
         user.deleteCookie(cookie.get());
+        deleteCookie(res);
         res.sendRedirect("/login");
     }
 }

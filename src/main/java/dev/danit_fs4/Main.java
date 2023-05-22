@@ -1,19 +1,12 @@
 package dev.danit_fs4;
 
-import dev.danit_fs4.DAO.AccountDao;
-import dev.danit_fs4.DAO.LikeDao;
 import dev.danit_fs4.DAO.UserListDao;
-import dev.danit_fs4.DAO.MessageDataBaseDao;
-import dev.danit_fs4.DAO.UserDao;
-import dev.danit_fs4.Entity.Message;
 import dev.danit_fs4.Servlet.*;
 import dev.danit_fs4.config.Config;
 import dev.danit_fs4.config.HerokuConfig;
 import dev.danit_fs4.db.DataBase;
 import dev.danit_fs4.filters.AuthFilter;
 import dev.danit_fs4.filters.loggedFilter;
-import dev.danit_fs4.services.AccountService;
-import dev.danit_fs4.services.UserService;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -31,7 +24,6 @@ public class Main {
 
         Config config = new HerokuConfig();
 
-
         // міграція
          DataBase.checkAndApplyDeltas(config);
 
@@ -42,30 +34,23 @@ public class Main {
 
         ServletContextHandler handler = new ServletContextHandler();
         UserListDao dao = new UserListDao();
-//        UserDao userDao = new UserDao(connection);
-//        LikeDao likeDao = new LikeDao(userDao, connection);
-//        AccountDao AD = new AccountDao(connection);
-//        AccountService AS = new AccountService(AD);
-//        UserService US =new UserService(userDao);
-//        MessageDataBaseDao msgDataBaseDao =new MessageDataBaseDao(connection);
         FilterHolder authFilterHolder = new FilterHolder(AuthFilter.class);
 
         EnumSet<DispatcherType> dt = EnumSet.of(DispatcherType.REQUEST);
 //        handler.addServlet(new ServletHolder(new TestServlet()),"/");
         handler.addServlet(new ServletHolder(new StaticContentServlet()),"/static/*");
-//        handler.addServlet(new ServletHolder(new LoginServlet(AS)),"/login");
         handler.addFilter(new FilterHolder(loggedFilter.class), "/login", dt);
         handler.addFilter(authFilterHolder, "/users", dt);
+
         handler.addServlet(new ServletHolder(new UsersServlet()),"/users");
-//        handler.addServlet(new ServletHolder(new MessageServlet()),"/messages/*");
         handler.addServlet(new ServletHolder(new LikeServlet()),"/liked");
         handler.addServlet(new ServletHolder(new LoginServlet()),"/login");
+
         handler.addFilter(authFilterHolder, "/liked", dt);
         handler.addFilter(authFilterHolder, "/messages/*", dt);
-//        handler.addServlet(new ServletHolder(new UsersServlet(userDatabaseDao, LD)),"/users");
+
         handler.addServlet(new ServletHolder(new MessageServlet()),"/messages/*");
         handler.addServlet(new ServletHolder(new LogoutServlet()),"/logout");
-//        handler.addServlet(new ServletHolder(new LikeServlet(connection)),"/liked");
 
         server.setHandler(handler);
         server.start();
