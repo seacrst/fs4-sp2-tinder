@@ -1,8 +1,10 @@
 package dev.danit_fs4;
 
 import dev.danit_fs4.DAO.LikeDao;
+import dev.danit_fs4.DAO.MessageDataBaseDao;
 import dev.danit_fs4.DAO.UserDao;
 import dev.danit_fs4.DAO.UserDatabaseDao;
+import dev.danit_fs4.Entity.Message;
 import dev.danit_fs4.Servlet.*;
 import dev.danit_fs4.config.Config;
 import dev.danit_fs4.config.HerokuConfig;
@@ -23,7 +25,7 @@ public class Main {
 
 
         // міграція
-//         DataBase.checkAndApplyDeltas(config);
+        DataBase.checkAndApplyDeltas(config);
 
         Connection connection = DataBase.connect(config).orElseThrow();
 
@@ -32,15 +34,15 @@ public class Main {
         ServletContextHandler handler = new ServletContextHandler();
         UserDao dao = new UserDao();
         UserDatabaseDao userDatabaseDao = new UserDatabaseDao(connection);
-        LikeDao likeDao = new LikeDao(userDatabaseDao, connection);
+        MessageDataBaseDao msgDataBaseDao = new MessageDataBaseDao(connection);
+//        LikeDao LD = new LikeDao(connection);
 
 //        handler.addServlet(new ServletHolder(new TestServlet()),"/");
         handler.addServlet(new ServletHolder(new StaticContentServlet()),"/static/*");
         handler.addServlet(new ServletHolder(new LoginServlet(userDatabaseDao)),"/login");
-        handler.addServlet(new ServletHolder(new UsersServlet(userDatabaseDao, likeDao)),"/users");
-        handler.addServlet(new ServletHolder(new MessageServlet()),"/messages/*");
-        handler.addServlet(new ServletHolder(new LikeServlet(userDatabaseDao, likeDao)),"/liked");
-        handler.addServlet(new ServletHolder(new LogoutServlet(userDatabaseDao)),"/logout");
+//        handler.addServlet(new ServletHolder(new UsersServlet(userDatabaseDao, LD)),"/users");
+        handler.addServlet(new ServletHolder(new MessageServlet(msgDataBaseDao, userDatabaseDao)),"/messages/*");
+//        handler.addServlet(new ServletHolder(new LikeServlet(connection)),"/liked");
 
         server.setHandler(handler);
         server.start();
