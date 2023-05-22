@@ -23,7 +23,7 @@ public class Main {
 
 
         // міграція
-//         DataBase.checkAndApplyDeltas(config);
+         DataBase.checkAndApplyDeltas(config);
 
         Connection connection = DataBase.connect(config).orElseThrow();
 
@@ -32,14 +32,14 @@ public class Main {
         ServletContextHandler handler = new ServletContextHandler();
         UserDao dao = new UserDao();
         UserDatabaseDao userDatabaseDao = new UserDatabaseDao(connection);
-        LikeDao LD = new LikeDao(connection);
+        LikeDao likeDao = new LikeDao(userDatabaseDao, connection);
 
 //        handler.addServlet(new ServletHolder(new TestServlet()),"/");
         handler.addServlet(new ServletHolder(new StaticContentServlet()),"/static/*");
         handler.addServlet(new ServletHolder(new LoginServlet(userDatabaseDao)),"/login");
-        handler.addServlet(new ServletHolder(new UsersServlet(userDatabaseDao, LD)),"/users");
+        handler.addServlet(new ServletHolder(new UsersServlet(userDatabaseDao, likeDao)),"/users");
         handler.addServlet(new ServletHolder(new MessageServlet()),"/messages/*");
-        handler.addServlet(new ServletHolder(new LikeServlet(connection)),"/liked");
+        handler.addServlet(new ServletHolder(new LikeServlet(userDatabaseDao, likeDao)),"/liked");
 
         server.setHandler(handler);
         server.start();

@@ -13,8 +13,10 @@ import java.util.Optional;
 
 public class LikeDao implements DAO<Like>{
     private final Connection connection;
-    public LikeDao(Connection connection) {
+    private final UserDatabaseDao userDao;
+    public LikeDao(UserDatabaseDao userDao, Connection connection) {
         this.connection = connection;
+        this.userDao = userDao;
     }
     @Override
     public void save(Like like) throws SQLException {
@@ -84,5 +86,44 @@ public class LikeDao implements DAO<Like>{
         stmt.setInt(3, UI);
         stmt.setInt(4, LUI);
         stmt.execute();
+    }
+
+    public List<Like> getAll() {
+        List<Like> likes = new ArrayList<>();
+        try {
+            ResultSet rsl = connection
+                    .prepareStatement("SELECT id, user_id, liked_user_id FROM liked")
+                    .executeQuery();
+
+            while (rsl.next()) {
+                likes.add(new Like(rsl.getInt("id"), rsl.getInt("user_id"), rsl.getInt("liked_user_id")));
+            }
+
+            return likes;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<User> getLikedUsers(Integer uid) {
+        List<User> users = new ArrayList<>();
+        try {
+            PreparedStatement ps = connection
+                    .prepareStatement("""
+                            select liked_user_id
+                            from liked
+                            where ? = user_id
+                            """);
+            ps.setInt(1, uid);
+            ResultSet rsl = ps.executeQuery();
+            while (rsl.next()) {
+                int id = rsl.getInt("liked_user_id");
+                Optional<User> user = userDao.load(id);
+                user.ifPresent(users::add);
+            }
+            return users;
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
