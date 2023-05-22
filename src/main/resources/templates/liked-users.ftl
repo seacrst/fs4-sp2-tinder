@@ -34,6 +34,9 @@
 <body>
 
 <div class="container">
+    <header style="position: sticky; top: 0; width: 100%; padding: 18px 80px; display: flex; justify-content: flex-end; align-items: center;">
+        <a href="/logout" class="bt link">Logout</a>
+    </header>
     <div class="row">
         <div class="col-8 offset-2">
             <div class="panel panel-default user_panel">

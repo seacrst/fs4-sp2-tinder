@@ -23,7 +23,7 @@ public class Main {
 
 
         // міграція
-         DataBase.checkAndApplyDeltas(config);
+//         DataBase.checkAndApplyDeltas(config);
 
         Connection connection = DataBase.connect(config).orElseThrow();
 
@@ -40,6 +40,7 @@ public class Main {
         handler.addServlet(new ServletHolder(new UsersServlet(userDatabaseDao, likeDao)),"/users");
         handler.addServlet(new ServletHolder(new MessageServlet()),"/messages/*");
         handler.addServlet(new ServletHolder(new LikeServlet(userDatabaseDao, likeDao)),"/liked");
+        handler.addServlet(new ServletHolder(new LogoutServlet(userDatabaseDao)),"/logout");
 
         server.setHandler(handler);
         server.start();

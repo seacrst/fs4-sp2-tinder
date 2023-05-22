@@ -1,4 +1,4 @@
-package dev.danit_fs4.view;
+package dev.danit_fs4.Utils;
 
 import dev.danit_fs4.Entity.User;
 import dev.danit_fs4.Servlet.ResourcesOps;
