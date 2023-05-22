@@ -13,8 +13,8 @@ import java.util.Optional;
 
 public class LikeDao implements DAO<Like>{
     private final Connection connection;
-    private final UserDatabaseDao userDao;
-    public LikeDao(UserDatabaseDao userDao, Connection connection) {
+    private final UserDao userDao;
+    public LikeDao(UserDao userDao, Connection connection) {
         this.connection = connection;
         this.userDao = userDao;
     }

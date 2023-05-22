@@ -1,8 +1,9 @@
 package dev.danit_fs4.Servlet;
 
 import dev.danit_fs4.DAO.LikeDao;
-import dev.danit_fs4.DAO.UserDatabaseDao;
-import dev.danit_fs4.Utils.Auth;
+import dev.danit_fs4.Utils.AuthService;
+import dev.danit_fs4.services.AccountService;
+import dev.danit_fs4.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,39 +12,27 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Optional;
 
 public class UsersServlet extends HttpServlet {
 //    private final UserDao userDao;
-    private final UserDatabaseDao users;
+    private final UserService US;
     private final LikeDao like;
     private Integer currInd = 0;
     private Integer activeUser;
-    public UsersServlet(UserDatabaseDao users, LikeDao like) {
-        this.users = users;
+    private AccountService AS;
+    public UsersServlet(UserService US, LikeDao like, AccountService AS) {
+        this.US = US;
         this.like = like;
+        this.AS =AS;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // static file
-//        Path filePath = Path.of(ResourcesOps.dirUnsafe("templates/like-page.html"));
-//        try (PrintWriter w = resp.getWriter()) {
-//            Files
-//                    .readAllLines(filePath)
-//                    .forEach(w::println);
-//        }
-        // data from DB List
-//        data.put("id", userDao.getByIndex(currentUserIndex).getId());
-//        data.put("name", userDao.getByIndex(currentUserIndex).getName());
-//        data.put("photo", userDao.getByIndex(currentUserIndex).getPhoto());
-
         setActiveUser(req);
-        // data from DB conn
         HashMap<String, Object> data = new HashMap<>();
-        data.put("id", users.getNext(currInd, activeUser).getId());
-        data.put("name", users.getNext(currInd, activeUser).getName());
-        data.put("photo", users.getNext(currInd, activeUser).getPhoto());
+        data.put("id", US.getNextUser(currInd, activeUser).getId());
+        data.put("name", US.getNextUser(currInd, activeUser).getName());
+        data.put("photo", US.getNextUser(currInd, activeUser).getPhoto());
 
         ResourcesOps.writeInto(resp, data,"like-page.ftl");
     }
@@ -52,11 +41,10 @@ public class UsersServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             submitAnswer(req.getParameter("answer"), req.getParameter("id"));
-            System.out.println(req.getParameter("answer"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        if (currInd >= users.size()){
+        if (currInd >= US.size()){
             currInd = 0;
             resp.sendRedirect("/liked");
         }
@@ -69,13 +57,8 @@ public class UsersServlet extends HttpServlet {
         currInd++;
     }
     private void setActiveUser(HttpServletRequest req){
-        try {
-            if(Auth.getCookie(req).isPresent()) {
-                Optional<Integer> id = users.getId(Auth.getCookie(req).get());
-                id.ifPresent(integer -> activeUser = integer);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        if(AuthService.getCookie(req).isPresent()) {
+            activeUser = AS.getId(AuthService.getCookie(req).get());
         }
     }
 }

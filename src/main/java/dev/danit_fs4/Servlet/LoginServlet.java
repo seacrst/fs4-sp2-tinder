@@ -1,57 +1,41 @@
 package dev.danit_fs4.Servlet;
 
-import dev.danit_fs4.DAO.UserDatabaseDao;
+import dev.danit_fs4.Utils.AuthService;
+import dev.danit_fs4.services.AccountService;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public class LoginServlet extends HttpServlet {
-    private final UserDatabaseDao users;
-    public LoginServlet(UserDatabaseDao users) {
-        this.users = users;
+    private final AccountService AS;
+    private boolean warningMessage = false;
+    public LoginServlet( AccountService as) {
+        this.AS = as;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ResourcesOps.writeInto(resp, null,"login.html");
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("message", warningMessage);
+        ResourcesOps.writeInto(resp, data,"login.ftl");
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        if (checkAuth(email, password)){
-            Cookie cookie = new Cookie("UUID", UUID.randomUUID().toString());
-            resp.addCookie(cookie);
-            try {
-                users.updateCookie(cookie.getValue(), email);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        if (AS.check(email, password)){
+            AS.addCookie(email, AuthService.addCookie(resp));
+            warningMessage = false;
             resp.sendRedirect("/users");
         } else {
+            warningMessage = true;
             resp.sendRedirect("/login");
         };
     }
 
-    private boolean checkAuth(String email, String password){
-        Map<String, String> authData = null;
-
-        try{
-            authData = users.getAuthData(email);
-            System.out.println(authData);
-            if (authData.isEmpty()) return false;
-            return authData.get(email).equals(password);
-        }catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

@@ -1,12 +1,15 @@
 package dev.danit_fs4;
 
+import dev.danit_fs4.DAO.AccountDao;
 import dev.danit_fs4.DAO.LikeDao;
+import dev.danit_fs4.DAO.UserListDao;
 import dev.danit_fs4.DAO.UserDao;
-import dev.danit_fs4.DAO.UserDatabaseDao;
 import dev.danit_fs4.Servlet.*;
 import dev.danit_fs4.config.Config;
 import dev.danit_fs4.config.HerokuConfig;
 import dev.danit_fs4.db.DataBase;
+import dev.danit_fs4.services.AccountService;
+import dev.danit_fs4.services.UserService;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -30,16 +33,18 @@ public class Main {
         Server server = new Server(config.port(8080));
 
         ServletContextHandler handler = new ServletContextHandler();
-        UserDao dao = new UserDao();
-        UserDatabaseDao userDatabaseDao = new UserDatabaseDao(connection);
-        LikeDao likeDao = new LikeDao(userDatabaseDao, connection);
-
+        UserListDao dao = new UserListDao();
+        UserDao userDao = new UserDao(connection);
+        LikeDao likeDao = new LikeDao(userDao, connection);
+        AccountDao AD = new AccountDao(connection);
+        AccountService AS =new AccountService(AD);
+        UserService US =new UserService(userDao);
 //        handler.addServlet(new ServletHolder(new TestServlet()),"/");
         handler.addServlet(new ServletHolder(new StaticContentServlet()),"/static/*");
-        handler.addServlet(new ServletHolder(new LoginServlet(userDatabaseDao)),"/login");
-        handler.addServlet(new ServletHolder(new UsersServlet(userDatabaseDao, likeDao)),"/users");
+        handler.addServlet(new ServletHolder(new LoginServlet(AS)),"/login");
+        handler.addServlet(new ServletHolder(new UsersServlet(US, likeDao, AS)),"/users");
         handler.addServlet(new ServletHolder(new MessageServlet()),"/messages/*");
-        handler.addServlet(new ServletHolder(new LikeServlet(userDatabaseDao, likeDao)),"/liked");
+        handler.addServlet(new ServletHolder(new LikeServlet(likeDao, AS)),"/liked");
 
         server.setHandler(handler);
         server.start();

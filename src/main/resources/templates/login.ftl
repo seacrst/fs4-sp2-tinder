@@ -25,6 +25,9 @@
         <input type="email" id="inputEmail" class="form-control" name="email" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+        <#if message = true>
+        <p class="mt-1 mb-3  warning" >Email or password is incorrect. Please try again.</p>
+        </#if>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         <p class="mt-5 mb-3 text-muted">&copy; Tinder 2018</p>
     </form>

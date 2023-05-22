@@ -371,3 +371,8 @@ width: 100%;
 display: flex;
 }
 
+.warning{
+color: red;
+font-size: 14px;
+text-align:left;
+}
