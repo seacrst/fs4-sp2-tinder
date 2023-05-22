@@ -23,12 +23,10 @@ public class Auth {
 
     public static void logout(HttpServletRequest req, HttpServletResponse res, UserDatabaseDao user) throws SQLException, IOException {
         Optional<String> cookie = getCookie(req);
+        if (cookie.isEmpty()) return;
 
         Optional<Cookie> uuid = Arrays.stream(req.getCookies()).filter(c -> c.getName().equals("UUID")).findFirst();
         uuid.ifPresent(c -> c.setMaxAge(0));
-
-        if (cookie.isEmpty()) return;
-
 
         user.updateCookie(cookie.get());
         res.sendRedirect("/login");
