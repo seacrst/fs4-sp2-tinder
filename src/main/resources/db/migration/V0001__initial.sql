@@ -10,10 +10,22 @@ create table if not exists users
     photo      text,
     uuid       text
 );
+--INSERT INTO users (email, password, name, photo) VALUES('john@gmail.com', '12345', 'John', 'https://robohash.org/68.186.255.198.png');
+--INSERT INTO users (email, password, name, photo) VALUES('mary@gmail.com', '11111', 'Mary', 'https://images.pexels.com/photos/2913125/pexels-photo-2913125.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+--INSERT INTO users (email, password, name, photo) VALUES('tom@gmail.com', 'qwert', 'Tom', 'https://i.pinimg.com/736x/90/f7/a4/90f7a49893bc987858e13e10ffc72a23.jpg');
+--INSERT INTO users (email, password, name, photo) VALUES('anna@gmail.com', '22222', 'Anna', 'https://i.pinimg.com/736x/90/f7/a4/90f7a49893bc987858e13e10ffc72a23.jpg');
+
 INSERT INTO users (email, password, name, photo) VALUES('john@gmail.com', '12345', 'John', 'https://robohash.org/68.186.255.198.png');
-INSERT INTO users (email, password, name, photo) VALUES('mary@gmail.com', '11111', 'Mary', 'https://images.pexels.com/photos/2913125/pexels-photo-2913125.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
-INSERT INTO users (email, password, name, photo) VALUES('tom@gmail.com', 'qwert', 'Tom', 'https://i.pinimg.com/736x/90/f7/a4/90f7a49893bc987858e13e10ffc72a23.jpg');
-INSERT INTO users (email, password, name, photo) VALUES('anna@gmail.com', '22222', 'Anna', 'https://i.pinimg.com/736x/90/f7/a4/90f7a49893bc987858e13e10ffc72a23.jpg');
+INSERT INTO users (email, password, name, photo) VALUES('mary@gmail.com', '11111', 'Mary', 'https://robohash.org/548.png?set=set4');
+INSERT INTO users (email, password, name, photo) VALUES('tom@gmail.com', 'qwert', 'Tom', 'https://robohash.org/77.123.13.90.png');
+INSERT INTO users (email, password, name, photo) VALUES('anna@gmail.com', '22222', 'Anna', 'https://robohash.org/7PD.png?set=set4');
+INSERT INTO users (email, password, name, photo) VALUES('alex@gmail.com', '22222', 'Alex', 'https://robohash.org/12Z.png?set=set3');
+INSERT INTO users (email, password, name, photo) VALUES('don@gmail.com', '22ss222', 'Don', 'https://robohash.org/SS0.png?set=set2');
+INSERT INTO users (email, password, name, photo) VALUES('nora@gmail.com', '22222', 'Nora', 'https://robohash.org/591.png?set=set4');
+INSERT INTO users (email, password, name, photo) VALUES('kevin@gmail.com', '22222', 'Kevin', 'https://robohash.org/tkitu');
+INSERT INTO users (email, password, name, photo) VALUES('kity@gmail.com', '22222', 'Kity', 'https://robohash.org/kitys');
+INSERT INTO users (email, password, name, photo) VALUES('harry@gmail.com', '22222', 'Harry', 'https://robohash.org/Y0C.png?set=set4');
+
 
 create table if not exists messages
 (
