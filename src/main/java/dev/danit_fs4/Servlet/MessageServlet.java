@@ -3,8 +3,8 @@ package dev.danit_fs4.Servlet;
 import dev.danit_fs4.Entity.Chat;
 import dev.danit_fs4.Utils.Auth;
 import dev.danit_fs4.Utils.View;
-import dev.danit_fs4.Utils.ViewMessage;
 import dev.danit_fs4.services.AccountService;
+import dev.danit_fs4.services.LikeService;
 import dev.danit_fs4.services.MessageService;
 
 import javax.servlet.ServletException;
@@ -19,30 +19,42 @@ public class MessageServlet extends HttpServlet {
 
     private final MessageService chatService = new MessageService();
     private final AccountService accountService = new AccountService();
+    private final LikeService likeService = new LikeService();
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, String[]> answerMap = req.getParameterMap();
-        int idReceiver = Integer.parseInt(answerMap.get("idReceiver")[0]);
-        chatService.saveMessage(
-                answerMap.get("body")[0],
-                Integer.parseInt(answerMap.get("idSender")[0]),
-                idReceiver);
-        resp.sendRedirect("/messages/" + idReceiver);
+        int guestId = Integer.parseInt(answerMap.get("idReceiver")[0]);
+        int hostId = Integer.parseInt(answerMap.get("idSender")[0]);
+
+        if (likeService.isLiked(hostId, guestId)) {
+            chatService.saveMessage(
+                    answerMap.get("body")[0],
+                    hostId,
+                    guestId);
+            resp.sendRedirect("/messages/" + guestId);
+        } else {
+            resp.sendRedirect("/users");
+        }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int hostId = getHostId(req);
         int guestId = Integer.parseInt(req.getPathInfo().substring(1));
-        Chat chat = chatService.getChat(hostId, guestId);
 
-        PrintWriter writer = resp.getWriter();
-        View vm = new View("/templates");
-        if (chat.getHistory().size() != 0)
-            vm.render(writer, chatService.getViewData(chat), "chat_exist.ftl");
-        else
-            vm.render(writer, chatService.getViewData(chat), "chat_empty.ftl");
+        if (likeService.isLiked(hostId, guestId)) {
+            Chat chat = chatService.getChat(hostId, guestId);
+            PrintWriter writer = resp.getWriter();
+            View vm = new View("/templates");
+            if (chat.getHistory().size() != 0)
+                vm.render(writer, chatService.getViewData(chat), "chat_exist.ftl");
+            else
+                vm.render(writer, chatService.getViewData(chat), "chat_empty.ftl");
+        } else {
+            resp.sendRedirect("/users");
+        }
     }
 
     private int getHostId(HttpServletRequest req) {

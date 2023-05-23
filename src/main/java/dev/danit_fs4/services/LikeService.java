@@ -20,4 +20,15 @@ public class LikeService {
     public void dislike(int currentUserId, int dislikedUserId) throws SQLException {
         likeDao.removeLikedUser(currentUserId, dislikedUserId);
     }
+
+    public boolean isLiked(Integer hostId, Integer guestId) {
+        boolean isLikedFlag;
+        try {
+            isLikedFlag = likeDao.getId(hostId, guestId).isPresent();
+        } catch (SQLException s) {
+            throw new RuntimeException(s);
+        }
+        return isLikedFlag;
+
+    }
 }

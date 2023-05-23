@@ -13,7 +13,11 @@ create table if not exists users
 INSERT INTO users (email, password, name, photo) VALUES('john@gmail.com', '12345', 'John', 'https://robohash.org/68.186.255.198.png');
 INSERT INTO users (email, password, name, photo) VALUES('mary@gmail.com', '11111', 'Mary', 'https://images.pexels.com/photos/2913125/pexels-photo-2913125.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
 INSERT INTO users (email, password, name, photo) VALUES('tom@gmail.com', 'qwert', 'Tom', 'https://i.pinimg.com/736x/90/f7/a4/90f7a49893bc987858e13e10ffc72a23.jpg');
-INSERT INTO users (email, password, name, photo) VALUES('anna@gmail.com', '22222', 'Anna', 'https://i.pinimg.com/736x/90/f7/a4/90f7a49893bc987858e13e10ffc72a23.jpg');
+INSERT INTO users (email, password, name, photo) VALUES('anna@gmail.com', '22222', 'Anna', 'https://jsc-dorian-gray.com/wp-content/uploads/2019/10/Nice-Girl_2x3_211019_01.jpg');
+INSERT INTO users (email, password, name, photo) VALUES('chewbacca@gmail.com', '33333', 'Chewbacca', 'https://static.wikia.nocookie.net/rustarwars/images/7/7f/ChewbaccaTFAHS-Fathead.png');
+INSERT INTO users (email, password, name, photo) VALUES('ellie@gmail.com', '44444', 'Ellie', 'https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1240w,f_auto,q_auto:best/rockcms/2023-01/230113-bella-ramsey-last-of-us-mn-1010-d6a81f.jpg');
+INSERT INTO users (email, password, name, photo) VALUES('quentin@gmail.com', '55555', 'Quentin', 'https://flxt.tmsimg.com/assets/52431_v9_bb.jpg');
+INSERT INTO users (email, password, name, photo) VALUES('wednesday@gmail.com', '55555', 'Wednesday', 'https://villagepipol.com/wp-content/uploads/2022/12/Wednesday-scaled.jpg');
 
 create table if not exists messages
 (
