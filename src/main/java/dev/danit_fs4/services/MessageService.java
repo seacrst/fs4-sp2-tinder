@@ -16,7 +16,6 @@ public class MessageService {
     private final MessageDataBaseDao messages = new MessageDataBaseDao();
     private final UserDao users = new UserDao();
 
-    //Зберігає месседж в БД
     public void saveMessage(String body, int hostId, int guestId) {
         try {
             messages.save(new Message(
@@ -30,7 +29,6 @@ public class MessageService {
         }
     }
 
-    //Повертає історію листування між користувачем та гостем
     public List<Message> getMessagesHistory(int hostId, int guestId) {
         List<Message> messagesHistory;
         try {
@@ -42,7 +40,6 @@ public class MessageService {
         return messagesHistory;
     }
 
-    //Повертає ім'я користувача
     public String getHostName(int hostId) {
         String result = "Users name not found";
         try {
@@ -54,7 +51,6 @@ public class MessageService {
         return result;
     }
 
-    //Повертає ім'я гостя
     public String getGuestName(int guestId) {
         String result = "Guests name not found";
         try {
@@ -66,12 +62,11 @@ public class MessageService {
         return result;
     }
 
-    // Повертає чат-об'єкт
     public Chat getChat(int hostId, int guestId) {
         return new Chat(getMessagesHistory(hostId, guestId), hostId, guestId, getHostName(hostId), getGuestName(guestId));
     }
 
-    public Map<String, Object> getViewData (Chat chat){
+    public Map<String, Object> getViewData(Chat chat) {
         Map<String, Object> data = new HashMap<>();
         data.put("messages", chat.getHistory());
         data.put("hostName", chat.getHostName());
