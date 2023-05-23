@@ -1,6 +1,5 @@
 package dev.danit_fs4;
 
-import dev.danit_fs4.DAO.UserListDao;
 import dev.danit_fs4.Servlet.*;
 import dev.danit_fs4.config.Config;
 import dev.danit_fs4.config.HerokuConfig;
@@ -11,7 +10,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-
 import javax.servlet.DispatcherType;
 import java.sql.Connection;
 import java.util.EnumSet;
@@ -35,6 +33,7 @@ public class Main {
         ServletContextHandler handler = new ServletContextHandler();
 
         EnumSet<DispatcherType> dt = EnumSet.of(DispatcherType.REQUEST);
+        handler.addServlet(new ServletHolder(new RootServlet()),"");
         handler.addServlet(new ServletHolder(new StaticContentServlet()),"/static/*");
 
         handler.addFilter(new FilterHolder(loggedFilter.class), "/login", dt);
@@ -42,8 +41,6 @@ public class Main {
         handler.addFilter(new FilterHolder(AuthFilter.class), "/liked", dt);
         handler.addFilter(new FilterHolder(AuthFilter.class), "/messages/*", dt);
         handler.addFilter(new FilterHolder(AuthFilter.class), "/logout", dt);
-        handler.addFilter(new FilterHolder(AuthFilter.class), "/", dt);
-
 
         handler.addServlet(new ServletHolder(new LoginServlet()),"/login");
         handler.addServlet(new ServletHolder(new UsersServlet()),"/users");
