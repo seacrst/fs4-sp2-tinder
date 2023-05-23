@@ -26,27 +26,21 @@ public class UsersServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         setActiveUser(req);
         HashMap<String, Object> data = new HashMap<>();
-        data.put("id", userService.getNextUser(currInd, activeUser).getId());
-        data.put("name", userService.getNextUser(currInd, activeUser).getName());
-        data.put("photo", userService.getNextUser(currInd, activeUser).getPhoto());
-
+        data.put("user", userService.getNextUser(currInd, activeUser));
         view.render(resp.getWriter(), data,"like-page.ftl");
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            submitAnswer(req.getParameter("answer"), req.getParameter("id"));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
+        submitAnswer(req.getParameter("answer"), req.getParameter("id"));
         if (currInd >= userService.size()){
             currInd = 0;
             resp.sendRedirect("/liked");
         }
         else resp.sendRedirect("/users");
     }
-    private void submitAnswer(String userAnswer, String i) throws SQLException {
+    private void submitAnswer(String userAnswer, String i) {
         int id = Integer.parseInt(i);
         if (userAnswer.equals("yes")) likeService.like(activeUser, id);
         if (userAnswer.equals("no")) likeService.dislike(activeUser, id);

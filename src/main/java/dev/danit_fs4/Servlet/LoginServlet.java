@@ -28,7 +28,7 @@ public class LoginServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         if (accountService.check(email, password)){
-            accountService.addCookie(email, Auth.addCookie(resp));
+            accountService.addUUID(email, Auth.addCookie(resp));
             warningMessage = false;
             resp.sendRedirect("/users");
         } else {

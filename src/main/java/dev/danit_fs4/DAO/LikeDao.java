@@ -55,18 +55,6 @@ public class LikeDao implements DAO<Like>{
         stmt.setInt(2, LUI);
         stmt.executeUpdate();
     }
-    public Optional<Integer> getId(int UI, int LUI) throws SQLException {
-        String sql = "SELECT id FROM liked WHERE user_id = ? AND liked_user_id = ?";
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        stmt.setInt(1, UI);
-        stmt.setInt(2, LUI);
-        stmt.execute();
-        ResultSet rs = stmt.executeQuery();
-        if(rs.next()){
-            return Optional.of(rs.getInt("id"));
-        }
-        return Optional.empty();
-    }
     public void addLiked(int UI, int LUI) throws SQLException {
         String sql = """
                 INSERT INTO liked (user_id, liked_user_id)

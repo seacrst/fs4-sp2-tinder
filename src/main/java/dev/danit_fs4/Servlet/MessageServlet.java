@@ -3,7 +3,6 @@ package dev.danit_fs4.Servlet;
 import dev.danit_fs4.Entity.Chat;
 import dev.danit_fs4.Utils.Auth;
 import dev.danit_fs4.Utils.View;
-import dev.danit_fs4.Utils.ViewMessage;
 import dev.danit_fs4.services.AccountService;
 import dev.danit_fs4.services.MessageService;
 
