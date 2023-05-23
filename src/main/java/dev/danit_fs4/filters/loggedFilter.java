@@ -1,6 +1,6 @@
 package dev.danit_fs4.filters;
 
-import dev.danit_fs4.Utils.Auth;
+import dev.danit_fs4.utils.Auth;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

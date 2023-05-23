@@ -1,7 +1,7 @@
 package dev.danit_fs4.services;
 
-import dev.danit_fs4.DAO.AccountDao;
-import dev.danit_fs4.Entity.Account;
+import dev.danit_fs4.dao.AccountDao;
+import dev.danit_fs4.entities.Account;
 import dev.danit_fs4.db.DataBase;
 
 import java.sql.SQLException;

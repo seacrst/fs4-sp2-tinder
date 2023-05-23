@@ -1,6 +1,6 @@
-package dev.danit_fs4.DAO;
+package dev.danit_fs4.dao;
 
-import dev.danit_fs4.Entity.Message;
+import dev.danit_fs4.entities.Message;
 import dev.danit_fs4.db.DataBase;
 
 import java.sql.Connection;

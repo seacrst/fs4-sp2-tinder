@@ -1,7 +1,7 @@
-package dev.danit_fs4.DAO;
+package dev.danit_fs4.dao;
 
-import dev.danit_fs4.Entity.Like;
-import dev.danit_fs4.Entity.User;
+import dev.danit_fs4.entities.Like;
+import dev.danit_fs4.entities.User;
 import dev.danit_fs4.db.DataBase;
 
 import java.sql.Connection;

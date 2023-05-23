@@ -1,4 +1,4 @@
-package dev.danit_fs4.Servlet;
+package dev.danit_fs4.servlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

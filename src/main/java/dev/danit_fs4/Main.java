@@ -1,6 +1,6 @@
 package dev.danit_fs4;
 
-import dev.danit_fs4.Servlet.*;
+import dev.danit_fs4.servlets.*;
 import dev.danit_fs4.config.Config;
 import dev.danit_fs4.config.HerokuConfig;
 import dev.danit_fs4.db.DataBase;

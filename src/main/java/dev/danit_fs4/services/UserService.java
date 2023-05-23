@@ -1,7 +1,7 @@
 package dev.danit_fs4.services;
 
-import dev.danit_fs4.DAO.UserDao;
-import dev.danit_fs4.Entity.User;
+import dev.danit_fs4.dao.UserDao;
+import dev.danit_fs4.entities.User;
 
 import java.sql.SQLException;
 import java.util.List;

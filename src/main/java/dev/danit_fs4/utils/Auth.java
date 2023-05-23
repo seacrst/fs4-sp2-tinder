@@ -1,4 +1,4 @@
-package dev.danit_fs4.Utils;
+package dev.danit_fs4.utils;
 
 import dev.danit_fs4.services.AccountService;
 

@@ -1,10 +1,10 @@
 package dev.danit_fs4.services;
 
-import dev.danit_fs4.DAO.MessageDataBaseDao;
-import dev.danit_fs4.DAO.UserDao;
-import dev.danit_fs4.Entity.Chat;
-import dev.danit_fs4.Entity.Message;
-import dev.danit_fs4.Entity.User;
+import dev.danit_fs4.dao.MessageDataBaseDao;
+import dev.danit_fs4.dao.UserDao;
+import dev.danit_fs4.entities.Chat;
+import dev.danit_fs4.entities.Message;
+import dev.danit_fs4.entities.User;
 
 import java.sql.SQLException;
 import java.util.HashMap;

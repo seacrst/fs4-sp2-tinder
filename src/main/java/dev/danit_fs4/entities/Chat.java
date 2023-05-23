@@ -1,4 +1,4 @@
-package dev.danit_fs4.Entity;
+package dev.danit_fs4.entities;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
-package dev.danit_fs4.Servlet;
+package dev.danit_fs4.servlets;
 
-import dev.danit_fs4.Utils.Auth;
+import dev.danit_fs4.utils.Auth;
 import dev.danit_fs4.services.AccountService;
 
 import javax.servlet.ServletException;

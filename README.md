@@ -15,7 +15,7 @@
 ## Виконанні завдання
 ****
 ### Валерій Швець (sxcrest)
-- Сервлети - LikedServlet, RootServlet.
+- Сервлети - LikedServlet, RootServlet, LogoutServlet.
 - Збірка проєкту. Конфігурація деплою на Heroku.
 
 Кобець Олександр

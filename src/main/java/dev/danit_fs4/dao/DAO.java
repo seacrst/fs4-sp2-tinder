@@ -1,4 +1,4 @@
-package dev.danit_fs4.DAO;
+package dev.danit_fs4.dao;
 
 import java.sql.SQLException;
 import java.util.Optional;
