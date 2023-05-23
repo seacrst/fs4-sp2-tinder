@@ -19,9 +19,13 @@
 - Збірка проєкту. Конфігурація деплою на Heroku.
 
 Кобець Олександр
-- 
-- 
-- 
+- Частина проєкту, що забезпечує емуляцію функціонування чату (вивод історії листування, та додавання нових месенджів):
+  - сервлет MessageServlet;
+  - сервіс MessageService;
+  - ДАО - MessageDataBaseDao;
+  - сутності Message, Chat;
+  - адаптування templates chat_empty.ftl / chat_exist.ftl під вивід даних з застосування шаблонізатора Apache FreeMarker.
+- розробка логичної конфигурації (схеми) бази данних.  
 
 Хомич Ольга
 - Сервлети: UsersServlet, StaticContentServlet, LoginServlet
