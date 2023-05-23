@@ -27,7 +27,7 @@ public class LikeDao implements DAO<Like>{
 
     @Override
     public Optional<Like> load(int id) throws SQLException {
-        String sql = "SELECT id, user_id, liked_user_id FROM liked WHERE user_id = ? AND liked_user_id =?";
+        String sql = "SELECT id, user_id, liked_user_id FROM liked WHERE id = ?";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery();
