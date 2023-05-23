@@ -49,7 +49,7 @@
                                 <i class="fa fa-smile-o"></i>
                             </div>
                             <div class="col-md-7 pl-0">
-<#--                                <input type="hidden" name="idSender" value=${hostId}>-->
+                                <input type="hidden" name="idSender" value=${hostId}>
                                 <input type="hidden" name="idReceiver" value=${guestId}>
                                 <input type="text" name="body" class="border-0" placeholder=" Send message">
                             </div>
