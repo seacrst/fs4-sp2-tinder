@@ -1,7 +1,7 @@
-package dev.danit_fs4.Servlet;
+package dev.danit_fs4.servlets;
 
-import dev.danit_fs4.Utils.Auth;
-import dev.danit_fs4.Utils.View;
+import dev.danit_fs4.utils.Auth;
+import dev.danit_fs4.utils.View;
 import dev.danit_fs4.services.AccountService;
 
 import javax.servlet.ServletException;
@@ -28,7 +28,7 @@ public class LoginServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         if (accountService.check(email, password)){
-            accountService.addCookie(email, Auth.addCookie(resp));
+            accountService.addUUID(email, Auth.addCookie(resp));
             warningMessage = false;
             resp.sendRedirect("/users");
         } else {

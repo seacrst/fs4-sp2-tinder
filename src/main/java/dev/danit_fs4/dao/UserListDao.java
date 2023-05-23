@@ -1,6 +1,6 @@
-package dev.danit_fs4.DAO;
+package dev.danit_fs4.dao;
 
-import dev.danit_fs4.Entity.User;
+import dev.danit_fs4.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;

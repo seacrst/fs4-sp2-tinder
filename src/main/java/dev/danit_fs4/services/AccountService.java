@@ -1,9 +1,7 @@
 package dev.danit_fs4.services;
 
-import dev.danit_fs4.DAO.AccountDao;
-import dev.danit_fs4.DAO.LikeDao;
-import dev.danit_fs4.DAO.UserDao;
-import dev.danit_fs4.Entity.Account;
+import dev.danit_fs4.dao.AccountDao;
+import dev.danit_fs4.entities.Account;
 import dev.danit_fs4.db.DataBase;
 
 import java.sql.SQLException;
@@ -13,7 +11,6 @@ import java.util.Optional;
 
 public class AccountService {
     public final AccountDao AD = new AccountDao(DataBase.getConnection());
-    public final LikeDao likeDao = new LikeDao();
     Map<String, Account> authData = new HashMap<>();
 
     public boolean check(String email, String password) {
@@ -26,8 +23,7 @@ public class AccountService {
             throw new RuntimeException(e);
         }
     }
-
-    public void addCookie(String email, String uuid) {
+    public void addUUID(String email, String uuid) {
         Account account = authData.get(email);
         Account updatedAccount = new Account(account.id(), account.email(), account.password(), uuid);
         try {
@@ -37,11 +33,11 @@ public class AccountService {
         }
     }
 
-    public void deleteCookie(String uuid) {
+    public void removeUUID(String uuid) {
         try {
-            if (AD.getByUUID(uuid).isPresent()) {
-                Account account = AD.getByUUID(uuid).get();
-                Account updatedAccount = new Account(account.id(), account.email(), account.password(), null);
+            Optional<Account> account = AD.getByUUID(uuid);
+            if (account.isPresent()) {
+                Account updatedAccount = new Account(account.get().id(), account.get().email(), account.get().password(), null);
                 AD.save(updatedAccount);
             }
         } catch (SQLException e) {
@@ -49,15 +45,12 @@ public class AccountService {
         }
     }
 
-    public Integer getId(String uuid) {
+    public Optional<Integer> getId(String uuid) {
         try {
             Optional<Account> account = AD.getByUUID(uuid);
-            if (account.isPresent()) {
-                return account.orElseThrow().id();
-            }
+            return account.map(Account::id).stream().findFirst();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
     }
 }

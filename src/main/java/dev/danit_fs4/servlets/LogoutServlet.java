@@ -1,7 +1,6 @@
-package dev.danit_fs4.Servlet;
+package dev.danit_fs4.servlets;
 
-import dev.danit_fs4.Utils.Auth;
-import dev.danit_fs4.Utils.View;
+import dev.danit_fs4.utils.Auth;
 import dev.danit_fs4.services.AccountService;
 
 import javax.servlet.ServletException;
@@ -12,19 +11,14 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class LogoutServlet extends HttpServlet {
-    private final View view = new View();
     private final AccountService accountService = new AccountService();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        view.render(resp.getWriter(), null,"logout.ftl");
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             Auth.logout(req, resp, accountService);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 }

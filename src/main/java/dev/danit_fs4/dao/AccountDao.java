@@ -1,6 +1,6 @@
-package dev.danit_fs4.DAO;
+package dev.danit_fs4.dao;
 
-import dev.danit_fs4.Entity.Account;
+import dev.danit_fs4.entities.Account;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

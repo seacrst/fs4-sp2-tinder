@@ -1,7 +1,6 @@
-package dev.danit_fs4.DAO;
+package dev.danit_fs4.dao;
 
-import dev.danit_fs4.Entity.Message;
-import dev.danit_fs4.Entity.User;
+import dev.danit_fs4.entities.Message;
 import dev.danit_fs4.db.DataBase;
 
 import java.sql.Connection;
@@ -13,9 +12,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MessageDataBaseDao implements DAO<Message> {
-
-//    private final List<Message> messages = new ArrayList<>();
-
 
     private final Connection connection = DataBase.getConnection();
 
@@ -33,12 +29,6 @@ public class MessageDataBaseDao implements DAO<Message> {
     @Override
     public Optional<Message> load(int id) throws SQLException {
         PreparedStatement stmt = connection.prepareStatement(
-//                "SELECT foo.id, foo.created_at, foo.body, foo.sender_id, foo.sender_name, foo.receiver_id, users.name as receiver_name " +
-//                        "FROM (SELECT messages.id, messages.created_at, messages.sender_id, messages.receiver_id,messages.body,users.name as sender_name " +
-//                        "FROM messages, users " +
-//                        "WHERE messages.id = ? and users.id = sender_id) AS foo, users " +
-//                        "WHERE users.id = receiver_id " +
-//                        "ORDER BY id"
                 "SELECT  created_at, body, sender_id, receiver_id FROM messages WHERE id = ? ORDER BY id"
         );
         stmt.setInt(1, id);
@@ -50,8 +40,6 @@ public class MessageDataBaseDao implements DAO<Message> {
                     rs.getString("body"),
                     rs.getInt("sender_id"),
                     rs.getInt("receiver_id")
-//                    rs.getString("sender_name"),
-//                    rs.getString("receiver_name")
             ));
         }
         return Optional.empty();
@@ -67,13 +55,6 @@ public class MessageDataBaseDao implements DAO<Message> {
     public List<Message> loadHistory(int idSender, int idReceiver) throws SQLException {
         List<Message> messageHistory = new LinkedList<>();
         PreparedStatement stmt = connection.prepareStatement(
-//                "SELECT foo.id, foo.created_at, foo.body, foo.sender_id, foo.sender_name, foo.receiver_id, users.name as receiver_name " +
-//                        "FROM (SELECT messages.id, messages.created_at, messages.sender_id, messages.receiver_id,messages.body,users.name as sender_name " +
-//                        "FROM messages, users " +
-//                        "WHERE (sender_id = ? AND receiver_id = ? OR sender_id = ? AND receiver_id = ?) and users.id = sender_id " +
-//                        ") AS foo, users " +
-//                        "WHERE users.id = receiver_id " +
-//                        "ORDER BY id"
                 "SELECT id, created_at, body, sender_id, receiver_id FROM messages WHERE sender_id = ? AND receiver_id = ? OR sender_id = ? AND receiver_id = ? ORDER BY id"
         );
         stmt.setInt(1, idSender);
@@ -88,8 +69,6 @@ public class MessageDataBaseDao implements DAO<Message> {
                     rs.getString("body"),
                     rs.getInt("sender_id"),
                     rs.getInt("receiver_id")
-//                    rs.getString("sender_name"),
-//                    rs.getString("receiver_name")
             );
             messageHistory.add(msg);
         }
