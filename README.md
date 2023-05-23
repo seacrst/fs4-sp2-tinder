@@ -15,7 +15,8 @@
 Хомич Ольга
 - 
 - 
-- 
+-
 
 # Застосунок
 ***[Посилання Heroku](http://tinderproject.herokuapp.com)***
+
