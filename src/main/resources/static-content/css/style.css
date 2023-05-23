@@ -310,20 +310,21 @@ input:focus{
 .send-msg{
   position: relative;
 }
-.send-msg:after{
-  content: "";
-  width:0;
-  height:0;
-  top: 0px;
-  right: -8px;
-  position: absolute;
-  border-top: 8px solid #CFD8DC;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-}
+/*.send-msg:after{*/
+/*  content: "";*/
+/*  width:0;*/
+/*  height:0;*/
+/*  top: 0px;*/
+/*  right: -8px;*/
+/*  position: absolute;*/
+/*  border-top: 8px solid #CFD8DC;*/
+/*  border-left: 8px solid transparent;*/
+/*  border-right: 8px solid transparent;*/
+/*}*/
 .send-msg p{
   background: #CFD8DC;
 }
+
 .sender-img{
   display: inline;
 }
@@ -332,7 +333,7 @@ input:focus{
   height: 32px;
   border-radius: 100%;
 }
-.receive-msg .receive-msg-desc{
+.receive-msg .receive-msg-desc .send-msg-desc{
   display: inline-block;
   position: relative;
 }
