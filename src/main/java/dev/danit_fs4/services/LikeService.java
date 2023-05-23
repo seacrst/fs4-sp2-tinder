@@ -28,4 +28,15 @@ public class LikeService {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean isLiked(Integer hostId, Integer guestId) {
+        boolean isLikedFlag;
+        try {
+            isLikedFlag = likeDao.getId(hostId, guestId).isPresent();
+        } catch (SQLException s) {
+            throw new RuntimeException(s);
+        }
+        return isLikedFlag;
+
+    }
 }

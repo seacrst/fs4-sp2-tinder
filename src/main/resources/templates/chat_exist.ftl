@@ -129,7 +129,7 @@
                             <div class="col-md-7 pl-0">
                                 <input type="hidden" name="idSender" value=${hostId}>
                                 <input type="hidden" name="idReceiver" value=${guestId}>
-                                <input type="text" name="body" class="border-0" placeholder=" Send message">
+                                <input type="text" name="body" class="border-0" placeholder=" Send message" autofocus>
                             </div>
                             <div class="col-md-3 text-right options-right">
                                 <i class="fa fa-picture-o mr-2"></i>
