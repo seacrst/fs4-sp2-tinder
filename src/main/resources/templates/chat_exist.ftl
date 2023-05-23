@@ -87,7 +87,7 @@
                     <div class="col-md-6 options-left pl-1">
                     </div>
                     <div class="col-md-6 options-right text-right pr-2">
-                        <i class="fa fa-cog"></i>
+                        <i class="fa"></i>
                     </div>
                 </div>
             </div>
