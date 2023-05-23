@@ -14,10 +14,40 @@
 
     <!-- Custom styles for this template -->
     <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .link, .link:hover {
+            text-decoration: none;
+            color: #1d2124;
+            transition: background-color .5s;
+        }
+        .bt {
+            box-sizing: border-box;
+            color: #1d2124;
+            border: 1px solid #1d2124;
+            border-radius: 8px; padding: 4px;
+        }
+        .bt:hover {
+            background-color: #1d2124;
+            color: #fff;
+            transition: background-color .5s;
+        }
+        .user-icon:hover {
+            fill: #fff;
+            transition: background-color .5s;
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
+    <header style="margin: 0 auto; position: sticky; top: 0; width: 730px; padding: 24px 0; display: flex; justify-content: flex-end; align-items: center;">
+        <nav style="display: flex; gap: 10px;">
+            <a href="/users" class="link bt" style="display: flex; align-items: center; padding: 0 4px;">
+                <svg class="user-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm7.753 18.305c-.261-.586-.789-.991-1.871-1.241-2.293-.529-4.428-.993-3.393-2.945 3.145-5.942.833-9.119-2.489-9.119-3.388 0-5.644 3.299-2.489 9.119 1.066 1.964-1.148 2.427-3.393 2.945-1.084.25-1.608.658-1.867 1.246-1.405-1.723-2.251-3.919-2.251-6.31 0-5.514 4.486-10 10-10s10 4.486 10 10c0 2.389-.845 4.583-2.247 6.305z"/></svg>
+            </a>
+            <a href="/logout" class="bt link">Logout</a>
+        </nav>
+    </header>
     <div class="row">
         <div class="col-8 offset-2">
             <div class="panel panel-default user_panel">
@@ -31,18 +61,29 @@
                             <#list users as user>
                                 <tr>
                                     <td width="10">
-                                        <div class="avatar-img">
-                                            <img class="img-circle" src=${user.photo} alt="photo" />
-                                        </div>
+                                        <a href="/messages/${user.getId()}">
+                                            <div class="avatar-img">
+                                                <img class="img-circle" src=${user.photo} alt="photo" />
+                                            </div>
+                                        </a>
                                     </td>
                                     <td class="align-middle">
-                                        ${user.name}
+                                        <a href="/messages/${user.getId()}" class="link">${user.name}</a>
                                     </td>
                                     <td class="align-middle">
                                         Builder Sales Agent
                                     </td>
                                     <td  class="align-middle">
                                         Last Login:  6/10/2017<br><small class="text-muted">5 days ago</small>
+                                    </td>
+                                </tr>
+                            <#else>
+                                <tr>
+                                    <td class="align-middle">
+                                        No one has been liked
+                                    </td>
+                                    <td class="align-middle">
+                                        <a href="/users" class="bt link">Try again</a>
                                     </td>
                                 </tr>
                             </#list>

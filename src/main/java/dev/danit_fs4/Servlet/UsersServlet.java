@@ -1,68 +1,46 @@
 package dev.danit_fs4.Servlet;
 
-import dev.danit_fs4.DAO.LikeDao;
-import dev.danit_fs4.DAO.UserDatabaseDao;
-import dev.danit_fs4.Entity.Like;
-import dev.danit_fs4.Main;
-import freemarker.template.Configuration;
-import freemarker.template.TemplateException;
+import dev.danit_fs4.Utils.Auth;
+import dev.danit_fs4.Utils.View;
+import dev.danit_fs4.services.AccountService;
+import dev.danit_fs4.services.LikeService;
+import dev.danit_fs4.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Optional;
 
 public class UsersServlet extends HttpServlet {
-//    private final UserDao userDao;
-    private final UserDatabaseDao users;
-    private final LikeDao like;
+    private final View view = new View();
+    private final UserService userService = new UserService();
+    private final LikeService likeService = new LikeService();
     private Integer currInd = 0;
-    private Integer activeUser=1;
-    public UsersServlet(UserDatabaseDao users, LikeDao like) {
-        this.users = users;
-        this.like = like;
-    }
+    private Integer activeUser;
+    private final AccountService accountService = new AccountService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // static file
-//        Path filePath = Path.of(ResourcesOps.dirUnsafe("templates/like-page.html"));
-//        try (PrintWriter w = resp.getWriter()) {
-//            Files
-//                    .readAllLines(filePath)
-//                    .forEach(w::println);
-//        }
-        // data from DB List
-//        data.put("id", userDao.getByIndex(currentUserIndex).getId());
-//        data.put("name", userDao.getByIndex(currentUserIndex).getName());
-//        data.put("photo", userDao.getByIndex(currentUserIndex).getPhoto());
-
-        // data from DB conn
+        setActiveUser(req);
         HashMap<String, Object> data = new HashMap<>();
-        data.put("id", users.getNext(currInd, activeUser).getId());
-        data.put("name", users.getNext(currInd, activeUser).getName());
-        data.put("photo", users.getNext(currInd, activeUser).getPhoto());
+        data.put("id", userService.getNextUser(currInd, activeUser).getId());
+        data.put("name", userService.getNextUser(currInd, activeUser).getName());
+        data.put("photo", userService.getNextUser(currInd, activeUser).getPhoto());
 
-        ResourcesOps.writeInto(resp, data,"like-page.ftl");
+        view.render(resp.getWriter(), data,"like-page.ftl");
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             submitAnswer(req.getParameter("answer"), req.getParameter("id"));
-            System.out.println(req.getParameter("answer"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        if (currInd >= users.size()){
+        if (currInd >= userService.size()){
             currInd = 0;
             resp.sendRedirect("/liked");
         }
@@ -70,8 +48,13 @@ public class UsersServlet extends HttpServlet {
     }
     private void submitAnswer(String userAnswer, String i) throws SQLException {
         int id = Integer.parseInt(i);
-        if (userAnswer.equals("yes")) like.addLiked(activeUser, id);
-        if (userAnswer.equals("no")) like.removeLikedUser(activeUser, id);
+        if (userAnswer.equals("yes")) likeService.like(activeUser, id);
+        if (userAnswer.equals("no")) likeService.dislike(activeUser, id);
         currInd++;
+    }
+    private void setActiveUser(HttpServletRequest req) {
+        if(Auth.getCookie(req).isPresent()) {
+            activeUser = accountService.getId(Auth.getCookie(req).get());
+        }
     }
 }

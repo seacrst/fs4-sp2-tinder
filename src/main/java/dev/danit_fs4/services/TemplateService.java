@@ -1,6 +1,5 @@
 package dev.danit_fs4.services;
 
-import dev.danit_fs4.Servlet.ResourcesOps;
 import freemarker.template.Configuration;
 
 import java.nio.charset.StandardCharsets;
@@ -17,6 +16,6 @@ public class TemplateService {
     }
 
     public static void setResources(String resources) {
-        cfg.setClassForTemplateLoading(ResourcesOps.class, resources);
+        cfg.setClassForTemplateLoading(TemplateService.class, resources);
     }
 }

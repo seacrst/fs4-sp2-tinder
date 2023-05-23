@@ -1,38 +1,35 @@
 package dev.danit_fs4.Servlet;
 
-import dev.danit_fs4.DAO.UserDatabaseDao;
-import dev.danit_fs4.Entity.Like;
 import dev.danit_fs4.Entity.User;
+import dev.danit_fs4.Utils.Auth;
+import dev.danit_fs4.services.AccountService;
+import dev.danit_fs4.Utils.View;
 import dev.danit_fs4.services.LikeService;
-import dev.danit_fs4.view.View;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LikeServlet extends HttpServlet {
-    private final LikeService service;
+    private final LikeService likeService = new LikeService();
+    private final AccountService accountService = new AccountService();
+    private final View view = new View("/templates");
 
-    public LikeServlet(Connection con) {
-        service = new LikeService(con);
-    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        PrintWriter writer = res.getWriter();
-        View view = new View("/templates");
+        if(Auth.getCookie(req).isPresent()) {
+            Integer uid = accountService.getId(Auth.getCookie(req).get());
+            List<User> likedUsers = likeService.getLikedUsers(uid);
 
-        List<Like> likes = service.getAll();
-        List<User> likedUsers = service.getLikedUsers(likes);
+            Map<String, Object> likedData = new HashMap<>();
+            likedData.put("users", likedUsers);
 
-        System.out.printf("LIKED USERS ==> %d", likedUsers.size());
-
-        view.renderUsers(writer, likedUsers, "liked-users.ftl");
+            view.render(res.getWriter(), likedData, "liked-users.ftl");
+        }
     }
 }
