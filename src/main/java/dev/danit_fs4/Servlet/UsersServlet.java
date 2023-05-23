@@ -11,23 +11,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class UsersServlet extends HttpServlet {
     private final View view = new View();
     private final UserService userService = new UserService();
     private final LikeService likeService = new LikeService();
     private Integer currInd = 0;
-    private Integer activeUser;
+    private Optional<Integer> activeUser;
     private final AccountService accountService = new AccountService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        setActiveUser(req);
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("user", userService.getNextUser(currInd, activeUser));
-        view.render(resp.getWriter(), data,"like-page.ftl");
+        setActiveUser(req, resp);
+        if(activeUser.isPresent()) {
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("user", userService.getNextUser(currInd, activeUser.get()));
+            view.render(resp.getWriter(), data, "like-page.ftl");
+        }
     }
 
     @Override
@@ -41,14 +43,14 @@ public class UsersServlet extends HttpServlet {
         else resp.sendRedirect("/users");
     }
     private void submitAnswer(String userAnswer, String i) {
-        int id = Integer.parseInt(i);
-        if (userAnswer.equals("yes")) likeService.like(activeUser, id);
-        if (userAnswer.equals("no")) likeService.dislike(activeUser, id);
-        currInd++;
-    }
-    private void setActiveUser(HttpServletRequest req) {
-        if(Auth.getCookie(req).isPresent()) {
-            activeUser = accountService.getId(Auth.getCookie(req).get());
+        if(activeUser.isPresent()) {
+            int id = Integer.parseInt(i);
+            if (userAnswer.equals("yes")) likeService.like(activeUser.get(), id);
+            if (userAnswer.equals("no")) likeService.dislike(activeUser.get(), id);
+            currInd++;
         }
+    }
+    private void setActiveUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        activeUser = Auth.getLoggedUser(req, resp, accountService);
     }
 }

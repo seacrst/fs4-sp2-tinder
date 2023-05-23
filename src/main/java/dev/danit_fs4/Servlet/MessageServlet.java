@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+import java.util.Optional;
 
 public class MessageServlet extends HttpServlet {
 
@@ -41,27 +42,24 @@ public class MessageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int hostId = getHostId(req);
+        Optional<Integer> hostId = Auth.getLoggedUser(req, resp, accountService);
         int guestId = Integer.parseInt(req.getPathInfo().substring(1));
-
-        if (likeService.isLiked(hostId, guestId)) {
-            Chat chat = chatService.getChat(hostId, guestId);
-            PrintWriter writer = resp.getWriter();
-            View vm = new View("/templates");
-            if (chat.getHistory().size() != 0)
-                vm.render(writer, chatService.getViewData(chat), "chat_exist.ftl");
-            else
-                vm.render(writer, chatService.getViewData(chat), "chat_empty.ftl");
-        } else {
-            resp.sendRedirect("/users");
-        }
+            if (hostId.isPresent() ) {
+                if(likeService.isLiked(hostId.get(), guestId)) {
+                    Chat chat = chatService.getChat(hostId.get(), guestId);
+                    PrintWriter writer = resp.getWriter();
+                    View vm = new View("/templates");
+                    if (chat.getHistory().size() != 0)
+                        vm.render(writer, chatService.getViewData(chat), "chat_exist.ftl");
+                    else
+                        vm.render(writer, chatService.getViewData(chat), "chat_empty.ftl");
+                } else{
+                    resp.sendRedirect("/users");
+                }
+            }
     }
 
-    private int getHostId(HttpServletRequest req) {
-        Integer id = null;
-        if (Auth.getCookie(req).isPresent()) {
-            id = accountService.getId(Auth.getCookie(req).get());
-        }
-        return id;
+    private Optional<Integer> getHostId(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        return Auth.getLoggedUser(req, resp, accountService);
     }
 }

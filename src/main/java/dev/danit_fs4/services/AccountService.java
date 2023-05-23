@@ -45,10 +45,10 @@ public class AccountService {
         }
     }
 
-    public Integer getId(String uuid) {
+    public Optional<Integer> getId(String uuid) {
         try {
             Optional<Account> account = AD.getByUUID(uuid);
-            return account.map(Account::id).orElse(null);
+            return account.map(Account::id).stream().findFirst();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

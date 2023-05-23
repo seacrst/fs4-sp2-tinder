@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 public class Auth {
     public static String cookieName = "UUID";
+
     public static Optional<String> getCookie(HttpServletRequest req){
         Cookie[] cookies = req.getCookies() != null ? req.getCookies() : new Cookie[0];
         return Stream.of(cookies)
@@ -38,5 +39,18 @@ public class Auth {
         user.removeUUID(cookie.get());
         deleteCookie(res);
         res.sendRedirect("/login");
+    }
+    public static Optional<Integer> getLoggedUser(HttpServletRequest req, HttpServletResponse resp, AccountService as) throws IOException {
+        if(Auth.getCookie(req).isPresent()) {
+            Optional<Integer> id = as.getId(Auth.getCookie(req).get());
+            if(id.isEmpty()){
+                deleteCookie(resp);
+                resp.sendRedirect("/login");
+                return Optional.empty();
+            } else{
+                return id;
+            }
+        }
+        return Optional.empty();
     }
 }
