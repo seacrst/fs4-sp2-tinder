@@ -1,4 +1,4 @@
-# Step Project 2: MVP застосунок на Java  - ***Tinder***
+# Step Project 2: MVP застосунок на Java  - ***[Tinder](http://tinderproject.herokuapp.com)***
 
 Дані для авторизації (email, password):
 * 'john@gmail.com', '12345'
