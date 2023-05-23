@@ -31,12 +31,13 @@
             transition: background-color .5s;
         }
         .pan {
-            padding: 32px 0;
+            padding: 24px 0;
             position: fixed;
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 768px;
+            width: 1024px;
+            z-index: 10;
             display: flex;
             justify-content: flex-end;
             align-items: center;
