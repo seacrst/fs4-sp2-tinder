@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -36,7 +35,7 @@ public class Auth {
         Optional<String> cookie = getCookie(req);
         if (cookie.isEmpty()) return;
 
-        user.deleteCookie(cookie.get());
+        user.removeUUID(cookie.get());
         deleteCookie(res);
         res.sendRedirect("/login");
     }

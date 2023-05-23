@@ -13,7 +13,6 @@ import java.util.Optional;
 
 public class UserDao implements DAO<User> {
     private final Connection connection = DataBase.getConnection();
-
     @Override
     public void save(User user) throws SQLException {
         if(user.id() == null) insert(user);

@@ -68,17 +68,17 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-lg-12 col-md-12 text-center">
-                    <img src=${photo} alt="" class="mx-auto rounded-circle img-fluid">
-                    <h3 class="mb-0 text-truncated">${name}</h3>
+                    <img src=${user.getPhoto()} alt="" class="mx-auto rounded-circle img-fluid">
+                    <h3 class="mb-0 text-truncated">${user.getName()}</h3>
                     <br>
                 </div>
                 <form method="POST" action="/users" class="liked-page__form">
                     <div class="col-12 col-lg-6" >
-                        <input type="hidden" name="id" value=${id}>
+                        <input type="hidden" name="id" value=${user.id()}>
                         <button type="submit" name="answer" value="no" class="btn btn-outline-danger btn-block"><span class="fa fa-times"></span> Dislike</button>
                     </div>
                     <div class="col-12 col-lg-6">
-                        <input type="hidden" name="id" value=${id}>
+                        <input type="hidden" name="id" value=${user.id()}>
                         <button type="submit" name="answer" value="yes" class="btn btn-outline-success btn-block"><span class="fa fa-heart"></span> Like</button>
                     </div>
                 </form>

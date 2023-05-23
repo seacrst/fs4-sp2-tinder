@@ -13,12 +13,20 @@ public class LikeService {
         return likeDao.getLikedUsers(id);
     }
 
-    public void like(int currentUserId, int likedUserId) throws SQLException {
-        likeDao.addLiked(currentUserId, likedUserId);
+    public void like(int currentUserId, int likedUserId) {
+        try {
+            likeDao.addLiked(currentUserId, likedUserId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void dislike(int currentUserId, int dislikedUserId) throws SQLException {
-        likeDao.removeLikedUser(currentUserId, dislikedUserId);
+    public void dislike(int currentUserId, int dislikedUserId) {
+        try {
+            likeDao.removeLikedUser(currentUserId, dislikedUserId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean isLiked(Integer hostId, Integer guestId) {
