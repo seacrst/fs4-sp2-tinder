@@ -2,6 +2,7 @@ package dev.danit_fs4.Servlet;
 
 import dev.danit_fs4.Entity.Chat;
 import dev.danit_fs4.Utils.Auth;
+import dev.danit_fs4.Utils.View;
 import dev.danit_fs4.Utils.ViewMessage;
 import dev.danit_fs4.services.AccountService;
 import dev.danit_fs4.services.MessageService;
@@ -37,11 +38,11 @@ public class MessageServlet extends HttpServlet {
         Chat chat = chatService.getChat(hostId, guestId);
 
         PrintWriter writer = resp.getWriter();
-        ViewMessage vm = new ViewMessage("/templates");
+        View vm = new View("/templates");
         if (chat.getHistory().size() != 0)
-            vm.renderMessages(writer, chat, "chat_exist.ftl");
+            vm.render(writer, chatService.getViewData(chat), "chat_exist.ftl");
         else
-            vm.renderMessages(writer, chat, "chat_empty.ftl");
+            vm.render(writer, chatService.getViewData(chat), "chat_empty.ftl");
     }
 
     private int getHostId(HttpServletRequest req) {
