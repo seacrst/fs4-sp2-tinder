@@ -88,7 +88,7 @@
         <div class="col-8 offset-2">
             <div class="panel panel-default user_panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">User List</h3>
+                    <h3 class="panel-title">Your favorites</h3>
                 </div>
                 <div class="panel-body">
                     <div class="table-container">
