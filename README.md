@@ -24,9 +24,9 @@
 - 
 
 Хомич Ольга
-- 
-- 
--
+- Сервлети: UsersServlet, StaticContentServlet, LoginServlet
+- HTTP Filter, Cookies
+- DB migration
 
 # Застосунок
 ***[Посилання Heroku](http://tinderproject.herokuapp.com)***
