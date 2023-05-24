@@ -8,6 +8,7 @@ import dev.danit_fs4.services.LikeService;
 import dev.danit_fs4.services.MessageService;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,12 +48,12 @@ public class MessageServlet extends HttpServlet {
             if (hostId.isPresent() ) {
                 if(likeService.isLiked(hostId.get(), guestId)) {
                     Chat chat = chatService.getChat(hostId.get(), guestId);
-                    PrintWriter writer = resp.getWriter();
+                    ServletOutputStream outputStream = resp.getOutputStream();
                     View vm = new View("/templates");
                     if (chat.getHistory().size() != 0)
-                        vm.render(writer, chatService.getViewData(chat), "chat_exist.ftl");
+                        vm.render(outputStream, chatService.getViewData(chat), "chat_exist.ftl");
                     else
-                        vm.render(writer, chatService.getViewData(chat), "chat_empty.ftl");
+                        vm.render(outputStream, chatService.getViewData(chat), "chat_empty.ftl");
                 } else{
                     resp.sendRedirect("/users");
                 }
