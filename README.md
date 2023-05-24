@@ -46,7 +46,7 @@
 - розробка логичної конфигурації (схеми) бази данних.  
 
 ### Хомич Ольга
-- Сервлети: UsersServlet, StaticContentServlet, LoginServlet
+- Сервлети: UsersServlet, StaticContentServlet, LoginServlet, RedirectToServlet - відповідні сутності, дао та сервіси. 
 - HTTP Filter, Cookies
 - DB migration
 
